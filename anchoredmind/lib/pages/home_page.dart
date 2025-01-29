@@ -1,4 +1,5 @@
 import '../components/menu_card.dart';
+import '../components/shared_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,19 +14,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF306468),
-      appBar: AppBar(
-        leading: BackButton(),
-        title: Row(
-          children: <Widget>[
-            Text(
-              "AnchoredMind                    ",
-              textAlign: TextAlign.center,
-            ),
-            Image.asset("images/logo_clear.png", width: 50, height: 50)
-          ],
-        ),
-        backgroundColor: Color(0xFFC2F1C8),
-      ),
+      appBar: SharedAppBar(name: "AnchoredMind"),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40.0), // Vertical padding
         child: Column(
