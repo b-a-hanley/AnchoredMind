@@ -1,5 +1,6 @@
-import '../components/menu_card.dart';
-import '../components/shared_app_bar.dart';
+import '../components/my_card.dart';
+import '../components/my_app_bar.dart';
+import 'journal_page.dart'; // Import the JournalPage widget
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF306468),
-      appBar: SharedAppBar(name: "AnchoredMind"),
+      appBar: MyAppBar(name: "AnchoredMind", context),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40.0), // Vertical padding
         child: Column(
@@ -47,10 +48,17 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 15,
                 crossAxisCount: 2,
                 children: <Widget>[
-                  MenuCard(name: "Journal", icon: Icons.edit_document),
-                  MenuCard(name: "Gratitude", icon: Icons.health_and_safety),
-                  MenuCard(name: "Mindful", icon: Icons.self_improvement, colour: Color(0xFF4DB6AC)),
-                  MenuCard(name: "Breath", icon: Icons.air, colour: Color(0xFF4DB6AC)),
+                  MyCard(name: "Journal", icon: Icons.edit_document,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => JournalPage()),
+                      );
+                    },
+                  ),
+                  MyCard(name: "Gratitude", icon: Icons.health_and_safety),
+                  MyCard(name: "Mindful", icon: Icons.self_improvement, colour: Color(0xFF4DB6AC)),
+                  MyCard(name: "Breath", icon: Icons.air, colour: Color(0xFF4DB6AC)),
                 ],
               ),
             ),
