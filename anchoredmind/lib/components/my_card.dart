@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 
-class MenuCard extends Container {
+class MyCard extends StatelessWidget {
   final String name;
   final IconData icon;
+  final GestureTapCallback? onPressed;
   final Color colour;
   final int width;
+
   // Constructor
-  MenuCard({
+  const MyCard({
     super.key,
     required this.name,
     required this.icon,
+    this.onPressed, 
     this.colour = const Color(0xFF80CBC4),
     this.width = 1,
-  }) : super(
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed, 
+      child: Container(
     //todo box shadow
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -29,9 +38,11 @@ class MenuCard extends Container {
               ),
               Icon(
                 icon, 
-                size: 70, 
+                size: 100, 
               ),
             ],
           ),
-        );
+        ),
+    );
+  }
 }
