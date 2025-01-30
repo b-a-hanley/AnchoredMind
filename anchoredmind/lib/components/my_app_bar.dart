@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 
-class SharedAppBar extends AppBar {
+class MyAppBar extends AppBar {
   final String name;
+  final BuildContext context;
   // Constructor
-  SharedAppBar({
+  MyAppBar(this.context, {
     super.key,
     required this.name,
   }) : super(
-          leading: BackButton(),
+          automaticallyImplyLeading: false,
+          backgroundColor: Color(0xFFC2F1C8),
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              BackButton(onPressed: () {Navigator.pop(context);}),
               Text(
-                "AnchoredMind                    ",
+                name,
                 textAlign: TextAlign.center,
               ),
               Image.asset("images/logo_clear.png", width: 50, height: 50)
             ],
           ),
-          backgroundColor: Color(0xFFC2F1C8),
         );
+        
+      
 }
