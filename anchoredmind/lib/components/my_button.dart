@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/my_colours.dart';
 
 class MyButton extends StatelessWidget {
   final String name;
@@ -12,7 +13,7 @@ class MyButton extends StatelessWidget {
     required this.name,
     required this.icon,
     this.onPressed,
-    this.colour = const Color(0xFF80CBC4),
+    this.colour = MyColours.primary,
   });
 
   @override

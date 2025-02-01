@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/my_colours.dart';
 
 class MyCard extends StatelessWidget {
   final String name;
@@ -13,7 +14,7 @@ class MyCard extends StatelessWidget {
     required this.name,
     required this.icon,
     this.onPressed, 
-    this.colour = const Color(0xFF80CBC4),
+    this.colour = MyColours.teal,
     this.width = 1,
   });
 

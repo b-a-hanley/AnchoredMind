@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/my_colours.dart';
 
 class MyAppBar extends AppBar {
   final String name;
@@ -9,7 +10,7 @@ class MyAppBar extends AppBar {
     required this.name,
   }) : super(
           automaticallyImplyLeading: false,
-          backgroundColor: Color(0xFFC2F1C8),
+          backgroundColor: MyColours.primary,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
