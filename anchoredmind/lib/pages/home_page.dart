@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+import '/pages/entry_list_page.dart';
+import '/pages/mindful_page.dart';
+import '/pages/breath_page.dart';
 import '../components/my_card.dart';
 import '../components/my_colours.dart';
 import '../components/my_app_bar.dart';
-import 'entry_list_page.dart';
-import 'mindful_page.dart';
-import 'package:flutter/material.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,8 +27,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             //Todo width 2 MenuCard
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 20),
               decoration: BoxDecoration(
                 color: MyColours.lightTeal,
                 borderRadius: BorderRadius.circular(20),
@@ -74,7 +75,14 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  MyCard(name: "Breath", icon: Icons.air, colour: MyColours.darkTeal),
+                  MyCard(name: "Breath", icon: Icons.air, colour: MyColours.darkTeal,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BreathPage()),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
