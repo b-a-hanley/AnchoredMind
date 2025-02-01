@@ -1,8 +1,8 @@
-import 'package:anchoredmind/components/my_app_bar.dart';
-import 'package:anchoredmind/components/my_button.dart';
-import '../components/my_colours.dart';
-import 'package:anchoredmind/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import '/pages/home_page.dart';
+import '../components/my_app_bar.dart';
+import '../components/my_button.dart';
+import '../components/my_colours.dart';
 
 class EntryListPage extends StatelessWidget {
   const EntryListPage({super.key});

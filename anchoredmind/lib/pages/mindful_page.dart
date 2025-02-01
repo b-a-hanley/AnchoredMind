@@ -1,9 +1,9 @@
-import 'package:anchoredmind/components/my_app_bar.dart';
-import 'package:audioplayers/audioplayers.dart';
-import '../components/my_colours.dart';
-import 'package:anchoredmind/components/my_audio_player.dart';
-import 'package:anchoredmind/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+import '../components/my_app_bar.dart';
+import '../components/my_colours.dart';
+import '../components/my_audio_player.dart';
+import '../pages/home_page.dart';
 
 class MindfulPage extends StatelessWidget {
   MindfulPage({super.key});
