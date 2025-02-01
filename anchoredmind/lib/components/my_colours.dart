@@ -6,6 +6,6 @@ class MyColours {
   static const Color lightTeal = Color(0xFFB2DFDB);
   static const Color teal = Color(0xFF80CBC4);
   static const Color darkTeal = Color(0xFF4DB6AC);
-  static const Color white = Color(0xFF000000);
-  static const Color black = Color(0xFFFFFFFF);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color black = Color(0xFF000000);
 }
