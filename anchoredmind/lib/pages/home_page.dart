@@ -1,6 +1,8 @@
 import '../components/my_card.dart';
+import '../components/my_colours.dart';
 import '../components/my_app_bar.dart';
-import 'journal_page.dart'; // Import the JournalPage widget
+import 'entry_list_page.dart';
+import 'mindful_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF306468),
+      backgroundColor: MyColours.backgroundGreen,
       appBar: MyAppBar(name: "AnchoredMind", context),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40.0), // Vertical padding
@@ -26,7 +28,7 @@ class _HomePageState extends State<HomePage> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 110, vertical: 20),
               decoration: BoxDecoration(
-                color: Colors.teal[100],
+                color: MyColours.lightTeal,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(children: [
@@ -52,13 +54,27 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => JournalPage()),
+                        MaterialPageRoute(builder: (context) => EntryListPage()),
                       );
                     },
                   ),
-                  MyCard(name: "Gratitude", icon: Icons.health_and_safety),
-                  MyCard(name: "Mindful", icon: Icons.self_improvement, colour: Color(0xFF4DB6AC)),
-                  MyCard(name: "Breath", icon: Icons.air, colour: Color(0xFF4DB6AC)),
+                  MyCard(name: "Gratitude", icon: Icons.health_and_safety,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EntryListPage()),
+                      );
+                    },
+                  ),
+                  MyCard(name: "Mindful", icon: Icons.self_improvement, colour: MyColours.darkTeal,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MindfulPage()),
+                      );
+                    },
+                  ),
+                  MyCard(name: "Breath", icon: Icons.air, colour: MyColours.darkTeal),
                 ],
               ),
             ),
