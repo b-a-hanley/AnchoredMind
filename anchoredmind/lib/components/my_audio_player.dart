@@ -14,7 +14,7 @@ class MyAudioPlayer extends StatelessWidget {
         margin: EdgeInsets.all(10),
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: MyColours.teal,
+          color: MyColours.primary,
           borderRadius: BorderRadius.circular(32),
         ),
         child: Column(children: [
@@ -24,12 +24,13 @@ class MyAudioPlayer extends StatelessWidget {
             Icon(Icons.forward_10, size: 40),
           ]),
           Slider(
-            value: 0,
+            value: 50,
             max: 100,
             divisions:100,
             label: "Slider",
             thumbColor: MyColours.backgroundGreen,
-            activeColor: MyColours.lightTeal,
+            activeColor: MyColours.darkTeal,
+            inactiveColor: MyColours.black,
             onChanged: (double value) {
               
             },
