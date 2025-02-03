@@ -1,5 +1,5 @@
+import 'package:anchoredmind/pages/new_entry_page.dart';
 import 'package:flutter/material.dart';
-import '/pages/home_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_button.dart';
 import '../components/my_colours.dart';
@@ -31,7 +31,7 @@ class EntryListPage extends StatelessWidget {
                     // Example: Navigate to another page when tapped
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                      MaterialPageRoute(builder: (context) => NewEntryPage()),
                     );
                   },
                 ),
