@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 32.0, // Make the text larger
                   ),
                 ),
-                Image.asset("images/logo_clear.png", width: 150, height: 150),
+                Image.asset("assets/images/logo_clear.png", width: 150, height: 150),
               ]),
             ),
             Flexible(

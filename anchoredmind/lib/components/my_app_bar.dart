@@ -19,7 +19,7 @@ class MyAppBar extends AppBar {
                 name,
                 textAlign: TextAlign.center,
               ),
-              Image.asset("images/logo_clear.png", width: 50, height: 50)
+              Image.asset("assets/images/logo_clear.png", width: 50, height: 50)
             ],
           ),
         );
