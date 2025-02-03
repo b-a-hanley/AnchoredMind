@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   audioplayers: ^6.1.1
   video_player: ^2.9.2
+  flick_video_player: ^0.9.0
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +62,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/logo_clear.png
+    - assets/videos/test1.mp4
+    - assets/images/logo_clear.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
