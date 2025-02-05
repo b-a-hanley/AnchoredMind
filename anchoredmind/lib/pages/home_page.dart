@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 32.0, // Make the text larger
                   ),
                 ),
-                Image.asset("images/logo_clear.png", width: 150, height: 150),
+                Image.asset("assets/images/logo_clear.png", width: 150, height: 150),
               ]),
             ),
             Flexible(
@@ -50,24 +50,9 @@ class _HomePageState extends State<HomePage> {
                 crossAxisSpacing: 15,
                 mainAxisSpacing: 15,
                 crossAxisCount: 2,
+
                 children: <Widget>[
-                  MyCard(name: "Journal", icon: Icons.edit_document,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EntryListPage()),
-                      );
-                    },
-                  ),
-                  MyCard(name: "Gratitude", icon: Icons.health_and_safety,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => EntryListPage()),
-                      );
-                    },
-                  ),
-                  MyCard(name: "Mindful", icon: Icons.self_improvement, colour: MyColours.darkTeal,
+                  MyCard(name: "Mindful", icon: Icons.self_improvement,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -75,11 +60,27 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  MyCard(name: "Breath", icon: Icons.air, colour: MyColours.darkTeal,
+                  MyCard(name: "Breath", icon: Icons.air,
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => BreathPage()),
+                      );
+                    },
+                  ),
+                  MyCard(name: "Journal", icon: Icons.edit_document, colour: MyColours.darkTeal,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EntryListPage()),
+                      );
+                    },
+                  ),
+                  MyCard(name: "Gratitude", icon: Icons.health_and_safety, colour: MyColours.darkTeal,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => EntryListPage()),
                       );
                     },
                   ),
