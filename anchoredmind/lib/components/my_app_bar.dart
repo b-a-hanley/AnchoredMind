@@ -9,20 +9,23 @@ class MyAppBar extends AppBar {
     super.key,
     required this.name,
   }) : super(
-          automaticallyImplyLeading: false,
-          backgroundColor: MyColours.primary,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              BackButton(onPressed: () {Navigator.pop(context);}),
-              Text(
-                name,
-                textAlign: TextAlign.center,
-              ),
-              Image.asset("assets/images/logo_clear.png", width: 50, height: 50)
-            ],
+      automaticallyImplyLeading: false,
+      backgroundColor: MyColours.primary,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          BackButton(onPressed: () {Navigator.pop(context);}),
+          Row(
+              children: [
+                Image.asset("assets/images/logo_clear.png", width: 40, height: 40),
+                Text(
+                  name,
+                  textAlign: TextAlign.center,
+                ),
+              ],
           ),
-        );
-        
-      
+          Icon(Icons.person, size: 32,)
+        ],
+      ),
+    );
 }
