@@ -11,24 +11,54 @@ class NewEntryPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
       appBar: MyAppBar(name: "New Entry", context),
-      body: Column(
-        children: [
-          Text("Title"),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Current Title',
+      body: Container(
+        margin: EdgeInsets.all(15),
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          color: MyColours.teal,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: ConstrainedBox(
+
+          constraints: const BoxConstraints.expand(),
+          child: Column(
+            children: [
+            Text(
+              'Title',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 24.0,// Make the text larger
+              ),
             ),
-          ),
-          Text("Body"),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Current Body',
+            TextField(
+              maxLines: null,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Current Title',
+              ),
             ),
-          ),
-          MyButton(name: "Add new", icon: Icons.add)
-        ],
+            Text(
+              'Body',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 24.0,// Make the text larger
+              ),
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 300.0,
+              ),
+              child: TextField(
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Current Body',
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       ),
     );
   }
