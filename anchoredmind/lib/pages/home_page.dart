@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '/pages/entry_list_page.dart';
 import '/pages/mindful_page.dart';
 import '/pages/breath_page.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Column(children: [
                 Text(
-                  'Feel',
+                  AppLocalizations.of(context)!.feel,
                   style: TextStyle(
                     fontSize: 32.0, // Make the text larger
                   ),
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
 
                 children: <Widget>[
-                  MyCard(name: "Mindful", icon: Icons.self_improvement,
+                  MyCard(name: AppLocalizations.of(context)!.mindful, icon: Icons.self_improvement,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  MyCard(name: "Breath", icon: Icons.air,
+                  MyCard(name: AppLocalizations.of(context)!.breath, icon: Icons.air,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  MyCard(name: "Journal", icon: Icons.edit_document, colour: MyColours.darkTeal,
+                  MyCard(name: AppLocalizations.of(context)!.journal, icon: Icons.edit_document, colour: MyColours.darkTeal,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
-                  MyCard(name: "Gratitude", icon: Icons.health_and_safety, colour: MyColours.darkTeal,
+                  MyCard(name: AppLocalizations.of(context)!.gratitude, icon: Icons.health_and_safety, colour: MyColours.darkTeal,
                     onPressed: () {
                       Navigator.push(
                         context,

@@ -4,6 +4,7 @@ import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import '../components/my_audio_player.dart';
 import '../pages/home_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MindfulPage extends StatelessWidget {
   MindfulPage({super.key});
@@ -13,7 +14,7 @@ class MindfulPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
-      appBar: MyAppBar(name: "Mindful", context),
+      appBar: MyAppBar(name: AppLocalizations.of(context)!.mindful, context),
       body: Column(
         children: [
           Expanded(child: ListView.builder(

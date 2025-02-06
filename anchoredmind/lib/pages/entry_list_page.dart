@@ -1,8 +1,10 @@
-import 'package:anchoredmind/pages/new_entry_page.dart';
+import 'package:anchoredmind/pages/mindful_page.dart';
 import 'package:flutter/material.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_button.dart';
 import '../components/my_colours.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EntryListPage extends StatelessWidget {
   const EntryListPage({super.key});
@@ -11,7 +13,7 @@ class EntryListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
-      appBar: MyAppBar(name: "Entries", context),
+      appBar: MyAppBar(context, name: AppLocalizations.of(context)!.journal),
       body: Column(
         children: [
           Expanded(child: ListView.builder(
@@ -31,7 +33,7 @@ class EntryListPage extends StatelessWidget {
                     // Example: Navigate to another page when tapped
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => NewEntryPage()),
+                      MaterialPageRoute(builder: (context) => MindfulPage()),
                     );
                   },
                 ),

@@ -3,7 +3,7 @@ import '../components/my_colours.dart';
 
 class MyButton extends StatelessWidget {
   final String name;
-  final IconData icon;
+  final IconData? icon;
   final GestureTapCallback? onPressed;
   final Color colour;
 
@@ -11,7 +11,7 @@ class MyButton extends StatelessWidget {
   const MyButton({
     super.key,
     required this.name,
-    required this.icon,
+    this.icon,
     this.onPressed,
     this.colour = MyColours.primary,
   });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/my_colours.dart';
+import '../pages/profile_page.dart';
 
 class MyAppBar extends AppBar {
   final String name;
@@ -24,7 +25,15 @@ class MyAppBar extends AppBar {
                 ),
               ],
           ),
-          Icon(Icons.person, size: 32,)
+          IconButton(
+            icon: Icon(Icons.person, size: 32),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+          )
         ],
       ),
     );
