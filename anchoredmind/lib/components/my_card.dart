@@ -3,7 +3,7 @@ import '../components/my_colours.dart';
 
 class MyCard extends StatelessWidget {
   final String name;
-  final IconData icon;
+  final IconData? icon;
   final GestureTapCallback? onPressed;
   final Color colour;
   final int width;
@@ -12,7 +12,7 @@ class MyCard extends StatelessWidget {
   const MyCard({
     super.key,
     required this.name,
-    required this.icon,
+    this.icon,
     this.onPressed, 
     this.colour = MyColours.teal,
     this.width = 1,
@@ -34,7 +34,7 @@ class MyCard extends StatelessWidget {
               Text(
                 name,
                 style: TextStyle(
-                  fontSize: 32.0, 
+                  fontSize: 28.0,
                 ),
               ),
               Icon(
