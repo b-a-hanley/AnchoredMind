@@ -39,6 +39,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   audioplayers: ^6.1.1
+  vibration:
   video_player: ^2.9.2
   flick_video_player: ^0.9.0
 
