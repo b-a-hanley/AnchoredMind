@@ -1,3 +1,4 @@
+import '../pages/feel_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '/pages/entry_list_page.dart';
@@ -27,22 +28,31 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.max,
           children: [
             //Todo width 2 MenuCard
+          GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FeelPage()),
+            );
+          },
+          child:
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 20),
               decoration: BoxDecoration(
                 color: MyColours.lightTeal,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(children: [
-                Text(
-                  AppLocalizations.of(context)!.feel,
-                  style: TextStyle(
-                    fontSize: 32.0, // Make the text larger
+              child: Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.feel,
+                    style: TextStyle(
+                      fontSize: 32.0, // Make the text larger
+                    ),
                   ),
-                ),
-                Image.asset("assets/images/logo_clear.png", width: 150, height: 150),
-              ]),
-            ),
+                  Image.asset("assets/images/logo_clear.png", width: 150, height: 150),
+                ]),
+            ),),
             Flexible(
               // Ensures the GridView takes up the remaining space
               child: GridView.count(
