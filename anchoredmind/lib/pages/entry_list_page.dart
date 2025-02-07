@@ -1,5 +1,6 @@
-import 'package:anchoredmind/pages/mindful_page.dart';
 import 'package:flutter/material.dart';
+import '../pages/new_entry_page.dart';
+import '../pages/entry_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_button.dart';
 import '../components/my_colours.dart';
@@ -33,14 +34,21 @@ class EntryListPage extends StatelessWidget {
                     // Example: Navigate to another page when tapped
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MindfulPage()),
+                      MaterialPageRoute(builder: (context) => EntryPage()),
                     );
                   },
                 ),
               );
             }),
           ),
-          MyButton(name: "Add new", icon: Icons.add)
+          MyButton(name: AppLocalizations.of(context)!.addNew, icon: Icons.add,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NewEntryPage()),
+              );
+            },
+          )
         ],
         
       ),
