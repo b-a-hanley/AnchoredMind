@@ -24,19 +24,24 @@ class FeelPage extends StatelessWidget {
                 crossAxisCount: 2,
 
                 children: <Widget>[
-                  MyCard(name: "Funk", icon: Icons.play_arrow,
+                  MyCard(name: "Funk", icon: Icons.music_note,
                     onPressed: () {
                       anotherOneBitesTheDust();
                     }
                   ),
-                  MyCard(name: "Waves", icon: Icons.play_arrow,
+                  MyCard(name: "Waves", icon: Icons.waves,
                     onPressed: () {
                       waves();
                     }
                   ),
-                  MyCard(name: "60bpm", icon: Icons.play_arrow,
+                  MyCard(name: "Heartbeat", icon: Icons.monitor_heart_outlined,
                     onPressed: () {
                       heartrate();
+                    }
+                  ),
+                  MyCard(name: "Jazz", icon: Icons.nightlife,
+                    onPressed: () {
+                      jazz();
                     }
                   ),
                 ],
@@ -49,10 +54,12 @@ class FeelPage extends StatelessWidget {
 void anotherOneBitesTheDust() async {
   if (await Vibration.hasVibrator() ?? false) {
     List<int> pattern = [
-      300, 100, 300, 100, 600, 100, 600, 100, 300, 100, 300, 100, 600, 100, 600
+      //300, 100, 300, 100, 600, 100, 600, 100, 300, 100, 300, 100, 600, 100, 600
+      300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26,
     ];
     List<int> intensities = [
-      255, 0, 255, 0, 180, 0, 180, 0, 255, 0, 255, 0, 180, 0, 180
+      //255, 0, 255, 0, 180, 0, 180, 0, 255, 0, 255, 0, 180, 0, 180
+      255,  0, 255,  0, 255,  0,  255,  0, 255,  0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255,  0, 255,  0,  255,  0, 255,  0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255,  0, 255,  0,  255,  0, 255,  0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255,  0, 255,  0,  255,  0, 255,  0, 255,  0, 255, 0, 255, 0, 255, 0, 255,  0, 255, 0, 255, 0, 255, 0
     ];
 
     Vibration.vibrate(pattern: pattern, intensities: intensities);
@@ -62,11 +69,10 @@ void anotherOneBitesTheDust() async {
 void waves() async {
   if (await Vibration.hasVibrator() ?? false) {
     List<int> pattern = [
-      400, 400, 400, 400, 400, 400, 400, 400, 400, 400,400, 400
-
+      100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100,
     ];
     List<int> intensities = [
-      255, 150, 0, 150, 255, 150, 0, 150, 255, 150, 0, 150, 255
+      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
     ];
 
     Vibration.vibrate(pattern: pattern, intensities: intensities);
@@ -76,10 +82,23 @@ void waves() async {
 void heartrate() async {
   if (await Vibration.hasVibrator() ?? false) {
     List<int> pattern = [
-      800, 0, 800, 0, 800, 0, 800, 0, 800, 0, 800, 0
+      700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700,
     ];
     List<int> intensities = [
       255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
+    ];
+
+    Vibration.vibrate(pattern: pattern, intensities: intensities);
+  }
+}
+
+void jazz() async {
+  if (await Vibration.hasVibrator() ?? false) {
+    List<int> pattern = [
+      200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300,
+    ];
+    List<int> intensities = [
+      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
     ];
 
     Vibration.vibrate(pattern: pattern, intensities: intensities);
