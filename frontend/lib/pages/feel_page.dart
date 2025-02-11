@@ -24,7 +24,7 @@ class FeelPage extends StatelessWidget {
                 crossAxisCount: 2,
 
                 children: <Widget>[
-                  MyCard(name: "Funk", icon: Icons.music_note,
+                  MyCard(name: "Bites the dust", icon: Icons.music_note,
                     onPressed: () {
                       anotherOneBitesTheDust();
                     }
@@ -52,7 +52,7 @@ class FeelPage extends StatelessWidget {
 }
 
 void anotherOneBitesTheDust() async {
-  if (await Vibration.hasVibrator() ?? false) {
+  if (await Vibration.hasVibrator()) {
     List<int> pattern = [
       300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26,
     ];
@@ -65,7 +65,7 @@ void anotherOneBitesTheDust() async {
 }
 
 void waves() async {
-  if (await Vibration.hasVibrator() ?? false) {
+  if (await Vibration.hasVibrator()) {
     List<int> pattern = [
       100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100,
     ];
@@ -78,7 +78,7 @@ void waves() async {
 }
 
 void heartrate() async {
-  if (await Vibration.hasVibrator() ?? false) {
+  if (await Vibration.hasVibrator()) {
     List<int> pattern = [
       700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700,
     ];
@@ -91,7 +91,7 @@ void heartrate() async {
 }
 
 void jazz() async {
-  if (await Vibration.hasVibrator() ?? false) {
+  if (await Vibration.hasVibrator()) {
     List<int> pattern = [
       200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300,
     ];

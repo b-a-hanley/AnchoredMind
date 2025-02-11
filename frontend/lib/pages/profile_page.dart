@@ -1,7 +1,7 @@
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../components/LocaleProvider.dart';
+import '../components/localeprovider.dart';
 import '../components/my_colours.dart';
 
 class ProfilePage extends StatelessWidget {
