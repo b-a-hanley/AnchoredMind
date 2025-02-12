@@ -24,7 +24,7 @@ class FeelPage extends StatelessWidget {
                 crossAxisCount: 2,
 
                 children: <Widget>[
-                  MyCard(name: "Bites the dust", icon: Icons.music_note,
+                  MyCard(name: "Queen", icon: Icons.music_note,
                     onPressed: () {
                       anotherOneBitesTheDust();
                     }
