@@ -23,7 +23,6 @@ class MyCard extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed, 
       child: Container(
-    //todo box shadow
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: colour,
@@ -43,7 +42,7 @@ class MyCard extends StatelessWidget {
               ),
             ],
           ),
-        ),
+      ),
     );
   }
 }
