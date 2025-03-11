@@ -27,10 +27,10 @@ class _SliderExampleState extends State<MyAudioPlayer> {
       }
     });
 
-    audioPlayer.durationStream.listen((position) {
+    audioPlayer.durationStream.listen((duration) {
       if (mounted) {
         setState(() {
-          _audioDuration = position;
+          _audioDuration = duration;
         });
       }
     });
