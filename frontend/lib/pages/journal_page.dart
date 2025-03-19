@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class EntryPage extends StatelessWidget {
-  const EntryPage({super.key});
+class JournalPage extends StatelessWidget {
+  const JournalPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
-      appBar: MyAppBar(name: "New Entry", context),
+      appBar: MyAppBar(context, name: AppLocalizations.of(context)!.journal),
       body: Container(
         margin: EdgeInsets.all(15),
         padding: EdgeInsets.symmetric(horizontal: 15),
@@ -29,7 +30,7 @@ class EntryPage extends StatelessWidget {
                 decoration: TextDecoration.underline,
               ),
             ),Text(
-              'Title',
+              '',
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 22.0,
