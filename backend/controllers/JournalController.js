@@ -13,7 +13,7 @@ export const getJournals = async (req, res) => {
 
 export const createJournal = async (req, res) => {
     const journal = req.body;
-    if(!journal.name) {
+    if(!journal.title&&!journal.mood&&!journal.input) {
         return res.status(400).json({success:false, message: "Provide correct details"});
     }
 

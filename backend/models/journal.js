@@ -1,7 +1,15 @@
 import mongoose from 'mongoose';
 
 const journalSchema = new mongoose.Schema({
-    name:{
+    title:{
+        type: String,
+        required: true
+    },
+    mood:{
+        type: String,
+        required: true
+    },
+    input:{
         type: String,
         required: true
     },
