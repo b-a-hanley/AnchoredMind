@@ -1,13 +1,25 @@
+import 'package:frontend/services/heart_rate_service.dart';
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../components/localeprovider.dart';
+import '../providers/localeprovider.dart';
 import '../components/my_colours.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
+class ProfilePage extends StatefulWidget {
   @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  String? selectedDevice;
+  
+  @override
+  void initState() {
+    //HeartRateService.instance.scan();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     final localeProvider = Provider.of<LocaleProvider>(context);
 
@@ -62,6 +74,13 @@ class ProfilePage extends StatelessWidget {
                   child: Text('繁體'),
                 ),
               ],
+            ),
+            Text(
+              'Heartrate device',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 24.0,
+              )
             ),
           ]),
         ),
