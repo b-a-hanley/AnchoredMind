@@ -11,13 +11,18 @@ class MyAudioPlayer extends StatefulWidget {
 }
 
 class _SliderExampleState extends State<MyAudioPlayer> {
+  final audioPlayer = AudioPlayerService();
+  
   Duration _currentDuration = Duration.zero;
   Duration _audioDuration = Duration.zero;
   bool _isPlaying = false;
-  final audioPlayer = AudioPlayerService();
+  String audioName = "";
+  
   @override
   void initState() {
     super.initState();
+    
+    audioName = audioPlayer.getName();
 
     audioPlayer.positionStream.listen((position) {
       if (mounted) {
@@ -48,7 +53,7 @@ class _SliderExampleState extends State<MyAudioPlayer> {
   String _formatTime(double value) {
     int minutes = value ~/ 60;
     int seconds = (value % 60).toInt();
-    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
@@ -62,6 +67,10 @@ class _SliderExampleState extends State<MyAudioPlayer> {
           borderRadius: BorderRadius.circular(32),
         ),
         child: Column(children: [
+          Text(
+            audioName,
+            style: TextStyle(fontSize: 20),
+          ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             IconButton(
               icon: Icon(Icons.replay_10, size: 40),
@@ -92,20 +101,22 @@ class _SliderExampleState extends State<MyAudioPlayer> {
               Text(_formatTime(_currentDuration.inSeconds.toDouble())),
               Expanded(
                 flex: 2,
-                child: Slider(
-                value: _currentDuration.inSeconds.toDouble(),
-                max: _audioDuration.inSeconds.toDouble(),
-                label: _formatTime(_currentDuration.inSeconds.toDouble()),
-                thumbColor: MyColours.backgroundGreen,
-                activeColor: MyColours.darkTeal,
-                inactiveColor: MyColours.black,
-                onChanged: (double value) {
-                  setState(() {
-                    audioPlayer.seekTo(Duration(seconds: value.toInt()));
-                    _currentDuration = Duration(seconds: value.toInt());
-                  });
-                },
-              ),),
+                child:
+                  Slider(
+                  value: _currentDuration.inSeconds.toDouble(),
+                  max: _audioDuration.inSeconds.toDouble()+2,
+                  label: _formatTime(_currentDuration.inSeconds.toDouble()),
+                  thumbColor: MyColours.backgroundGreen,
+                  activeColor: MyColours.darkTeal,
+                  inactiveColor: MyColours.black,
+                  onChanged: (double value) {
+                    setState(() {
+                      audioPlayer.seekTo(Duration(seconds: value.toInt()));
+                      _currentDuration = Duration(seconds: value.toInt());
+                    });
+                  },
+                ),
+              ),
               Text(_formatTime(_audioDuration.inSeconds.toDouble())),
           ]),
         ]),

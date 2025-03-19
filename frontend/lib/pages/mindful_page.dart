@@ -3,7 +3,6 @@ import '../services/audio_player_service.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import '../components/my_audio_player.dart';
-import '../pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MindfulPage extends StatelessWidget {
@@ -49,7 +48,7 @@ class MindfulPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      audioPlayer.setAudio(audioData[index][3]);
+                      audioPlayer.setAudio(audioData[index][3],audioData[index][0]);
                     },
                     child: Card(
                       color: MyColours.lightTeal,
