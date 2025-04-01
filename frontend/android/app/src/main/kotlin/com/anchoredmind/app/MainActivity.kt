@@ -1,4 +1,4 @@
-package com.example.anchoredmind
+package com.anchoredmind.app
 
 import io.flutter.embedding.android.FlutterActivity
 
