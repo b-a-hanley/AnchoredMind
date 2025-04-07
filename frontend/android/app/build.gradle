@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.anchoredmind"
+    namespace = "com.anchoredmind.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

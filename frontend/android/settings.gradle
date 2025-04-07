@@ -23,3 +23,4 @@ plugins {
 }
 
 include ":app"
+include ':objectbox_flutter_libs'
