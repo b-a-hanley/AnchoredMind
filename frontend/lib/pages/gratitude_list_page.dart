@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/services/json_service.dart';
-import '../pages/new_gratitude_page.dart';
+import 'gratitude_form.dart';
 import '../pages/gratitude_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_button.dart';
@@ -11,17 +11,17 @@ class GratitudeListPage extends StatefulWidget {
   const GratitudeListPage({super.key});
 
   @override
-  _GratitudeListPageState createState() => _GratitudeListPageState();
+  GratitudeListPageState createState() => GratitudeListPageState();
 }
 
-class _GratitudeListPageState extends State<GratitudeListPage> {
+class GratitudeListPageState extends State<GratitudeListPage> {
   final jsonService = JsonService();
-  late Future<int> gratitudeLengthFuture;
+  late Future<int> gratitudeLength;
 
   @override
   void initState() {
     super.initState();
-    gratitudeLengthFuture = jsonService.getGratitudeLength();
+    gratitudeLength = jsonService.getGratitudeLength();
   }
 
   @override
@@ -33,7 +33,7 @@ class _GratitudeListPageState extends State<GratitudeListPage> {
           children: [
             Expanded(
               child: FutureBuilder<int>(
-                future: gratitudeLengthFuture,
+                future: gratitudeLength,
                 builder: (context, lengthSnapshot) {
                   if (lengthSnapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -65,37 +65,35 @@ class _GratitudeListPageState extends State<GratitudeListPage> {
                               return ListTile(
                                 title: Text("Loading..."),
                                 subtitle: Text("Loading..."),
-                                trailing: Icon(Icons.delete),
                               );
                             } else if (snapshot.hasError) {
                               return ListTile(
                                 title: Text("Error loading gratitude"),
                                 subtitle: Text("Please try again later."),
-                                trailing: Icon(Icons.delete),
                               );
                             } else if (!snapshot.hasData ||
                                 snapshot.data == null) {
                               return ListTile(
                                 title: Text("No gratitude found"),
                                 subtitle: Text("No mood data available."),
-                                trailing: Icon(Icons.delete),
                               );
                             }
 
                             String title =
-                                snapshot.data!["title"] ?? "Untitled Gratitude";
-                            String mood =
-                                snapshot.data!["mood"] ?? "Unknown Mood";
+                                snapshot.data!["prompt"] ?? "Untitled prompt";
+                            String gratitude =
+                                snapshot.data!["gratitude"] ?? "Unknown gratitude";
+                            String date =
+                                snapshot.data!["time"] ?? "Unknown time";
 
                             return ListTile(
                               title: Text(title),
-                              subtitle: Text(mood),
-                              trailing: Icon(Icons.delete),
+                              subtitle: Text(date),
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => GratitudePage()),
+                                      builder: (context) => GratitudePage(index: index)),
                                 );
                               },
                             );
@@ -113,7 +111,7 @@ class _GratitudeListPageState extends State<GratitudeListPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NewGratitudeForm()),
+                  MaterialPageRoute(builder: (context) => GratitudeForm()),
                 );
               },
             ),
