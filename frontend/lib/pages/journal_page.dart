@@ -10,10 +10,10 @@ class JournalPage extends StatefulWidget {
   const JournalPage({super.key, required this.index});
 
   @override
-  _JournalPageState createState() => _JournalPageState();
+  JournalPageState createState() => JournalPageState();
 }
 
-class _JournalPageState extends State<JournalPage> {
+class JournalPageState extends State<JournalPage> {
   final jsonService = JsonService();
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:intl/intl.dart';
 
 class JsonService {
 
@@ -20,7 +21,7 @@ class JsonService {
     return '${directory.path}/anchoredMind.json';
   }
 
-  readJson() async {
+   readJson() async {
     if (jsonData["journal"].isNotEmpty|| jsonData["gratitude"].isNotEmpty) return null;
     final file = File(await getLocalFilePath());
 
@@ -41,7 +42,7 @@ class JsonService {
     return jsonData;
   }
 
-  Future<Map<String, dynamic>> getJournal(i) async{
+  Future<Map<String, dynamic>> getJournal(int i) async{
     await readJson();
     return jsonData["journal"][i];
   }
@@ -61,7 +62,8 @@ class JsonService {
     Map<String, String> newEntry = {
       "title": title,
       "mood": mood,
-      "journalEntry": journalEntry
+      "journalEntry": journalEntry,
+      "time": DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())
     };
     jsonData["journal"].add(newEntry);
     writeJson();
@@ -74,7 +76,7 @@ class JsonService {
 
   Future<List<String>> getGratitudeTitles() async {
     await readJson();
-    return jsonData["gratitude"].map<String>((entry) => entry["title"]).toList();
+    return jsonData["gratitude"].map<String>((entry) => entry["prompt"]).toList();
   }
 
   Future<int> getGratitudeLength() async {
@@ -82,12 +84,24 @@ class JsonService {
     return jsonData["gratitude"].length;
   }
 
-  postGratitude(String title, String mood, String gratitudeEntry) async {
+  postGratitude(String prompt1, String gratitude1, String prompt2, String gratitude2, String prompt3, String gratitude3) async {
     await readJson();
     Map<String, String> newEntry = {
-      "title": title,
-      "mood": mood,
-      "gratitudeEntry": gratitudeEntry
+      "prompt": prompt1[0].toUpperCase() + prompt1.substring(1),
+      "gratitude": gratitude1,
+      "time": DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())
+    };
+    jsonData["gratitude"].add(newEntry);
+    newEntry = {
+      "prompt": prompt2[0].toUpperCase() + prompt2.substring(1),
+      "gratitude": gratitude2,
+      "time": DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())
+    };
+    jsonData["gratitude"].add(newEntry);
+    newEntry = {
+      "prompt": prompt3[0].toUpperCase() + prompt3.substring(1),
+      "gratitude": gratitude3,
+      "time": DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())
     };
     jsonData["gratitude"].add(newEntry);
     writeJson();
