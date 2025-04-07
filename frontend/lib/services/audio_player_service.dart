@@ -11,52 +11,52 @@ class AudioPlayerService {
     return _instance!;
   }
 
-  final AudioPlayer _player = AudioPlayer();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   Duration _audioDuration = Duration.zero;
   String asset = "audio/StillMind4MinuteBodyScan.mp3";
   String name = "Four minute body scan";
   Duration get audioDuration => _audioDuration;
-  Stream<Duration> get positionStream => _player.onPositionChanged;
-  Stream<Duration> get durationStream => _player.onDurationChanged;
-  Stream<PlayerState> get stateStream => _player.onPlayerStateChanged;
+  Stream<Duration> get positionStream => audioPlayer.onPositionChanged;
+  Stream<Duration> get durationStream => audioPlayer.onDurationChanged;
+  Stream<PlayerState> get stateStream => audioPlayer.onPlayerStateChanged;
 
   Future<void> setAudio(String path, String audioName) async {
-    _player.stop();
+    audioPlayer.stop();
     asset = path;
     name = audioName;
-    await _player.play(AssetSource(asset));
+    await audioPlayer.play(AssetSource(asset));
   }
 
   Future<void> play() async {
     if (asset.isEmpty) return;
-    if (_player.state == PlayerState.paused) {
-      await _player.resume();
-    } else if (_player.state == PlayerState.stopped||_player.state == PlayerState.completed) {
-      await _player.stop();
-      await _player.play(AssetSource(asset));
+    if (audioPlayer.state == PlayerState.paused) {
+      await audioPlayer.resume();
+    } else if (audioPlayer.state == PlayerState.stopped||audioPlayer.state == PlayerState.completed) {
+      await audioPlayer.stop();
+      await audioPlayer.play(AssetSource(asset));
     } else {
-      await  _player.pause();
+      await  audioPlayer.pause();
     }
   }
 
   Future<void> stop() async {
     if (asset.isEmpty) return;
-    await  _player.stop();
+    await  audioPlayer.stop();
   }
 
   Future<Duration> getCurrentPosition() async {
-    return await _player.getCurrentPosition() ?? Duration.zero;
+    return await audioPlayer.getCurrentPosition() ?? Duration.zero;
   }
 
   PlayerState getCurrentState() {
-    return _player.state;
+    return audioPlayer.state;
   }
 
   String getName() {
     return name;
   }
 
-  Future<void> seekTo(Duration position) async => await _player.seek(position);
+  Future<void> seekTo(Duration position) async => await audioPlayer.seek(position);
 
 }
