@@ -1,4 +1,4 @@
-import 'package:frontend/services/heart_rate_service.dart';
+
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,10 +7,10 @@ import '../components/my_colours.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
 
   String? selectedDevice;
   
