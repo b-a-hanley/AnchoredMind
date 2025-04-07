@@ -6,35 +6,51 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
   
 class BreathPage extends StatefulWidget {
   @override
-  _BreathPageState createState() => _BreathPageState();
+  BreathPageState createState() => BreathPageState();
 }
 
-class _BreathPageState extends State<BreathPage> {
-  late FlickManager flickManager;
+class BreathPageState extends State<BreathPage> {
+  FlickManager? flickManager;
+  Object error ={};
+  bool _error =false;
 
   @override
   void initState() {
     super.initState();
-    flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.asset(
-        "assets/videos/breath.mp4",
-      )..setLooping(true),
-    );
+    try {
+      flickManager = FlickManager(
+        videoPlayerController: VideoPlayerController.asset(
+          "assets/videos/breath.mp4",
+        )..setLooping(true),
+      );
+    } catch (e) {
+      debugPrint("Video init error: $e");
+      setState(() {
+        error = e;
+        _error = true;
+      });
+    }
   }
 
   @override
   void dispose() {
-    flickManager.dispose();
+    flickManager?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(context, name: AppLocalizations.of(context)!.breath),
-        body: Expanded(
-          child:  FlickVideoPlayer(flickManager: flickManager),
-        ),
-      );
+      appBar: MyAppBar(context, name: AppLocalizations.of(context)!.breath),
+      body: Column(
+        children: [
+          Expanded(
+            child: _error || flickManager == null
+              ? Center(child: Text(error.toString(), style: TextStyle(fontSize: 18)))
+              : FlickVideoPlayer(flickManager: flickManager!),
+          ),
+        ],
+      ),
+    );
   }
 }

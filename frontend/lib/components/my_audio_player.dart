@@ -7,15 +7,15 @@ class MyAudioPlayer extends StatefulWidget {
   const MyAudioPlayer({super.key});
 
   @override
-  State<MyAudioPlayer> createState() => _SliderExampleState();
+  State<MyAudioPlayer> createState() => MyAudioPlayerState();
 }
 
-class _SliderExampleState extends State<MyAudioPlayer> {
+class MyAudioPlayerState extends State<MyAudioPlayer> {
   final audioPlayer = AudioPlayerService();
   
-  Duration _currentDuration = Duration.zero;
-  Duration _audioDuration = Duration.zero;
-  bool _isPlaying = false;
+  Duration currentDuration = Duration.zero;
+  Duration audioDuration = Duration.zero;
+  bool isPlaying = false;
   String audioName = "";
   
   @override
@@ -27,7 +27,7 @@ class _SliderExampleState extends State<MyAudioPlayer> {
     audioPlayer.positionStream.listen((position) {
       if (mounted) {
         setState(() {
-          _currentDuration = position;
+          currentDuration = position;
         });
       }
     });
@@ -35,7 +35,7 @@ class _SliderExampleState extends State<MyAudioPlayer> {
     audioPlayer.durationStream.listen((duration) {
       if (mounted) {
         setState(() {
-          _audioDuration = duration;
+          audioDuration = duration;
         });
       }
     });
@@ -43,7 +43,7 @@ class _SliderExampleState extends State<MyAudioPlayer> {
     audioPlayer.stateStream.listen((state) {
       if (mounted) {
         setState(() {
-          _isPlaying = state == PlayerState.playing;
+          isPlaying = state == PlayerState.playing;
         });
       }
     });
@@ -81,7 +81,7 @@ class _SliderExampleState extends State<MyAudioPlayer> {
             ),
             IconButton(
               icon: Icon(
-                (_isPlaying) ? Icons.stop_circle : Icons.play_circle,
+                (isPlaying) ? Icons.stop_circle : Icons.play_circle,
                 size: 40,
               ),
               onPressed: () {
@@ -98,26 +98,26 @@ class _SliderExampleState extends State<MyAudioPlayer> {
           ]),
           Row(
             children: [
-              Text(_formatTime(_currentDuration.inSeconds.toDouble())),
+              Text(_formatTime(currentDuration.inSeconds.toDouble())),
               Expanded(
                 flex: 2,
                 child:
                   Slider(
-                  value: _currentDuration.inSeconds.toDouble(),
-                  max: _audioDuration.inSeconds.toDouble()+2,
-                  label: _formatTime(_currentDuration.inSeconds.toDouble()),
+                  value: currentDuration.inSeconds.toDouble(),
+                  max: audioDuration.inSeconds.toDouble()+2,
+                  label: _formatTime(currentDuration.inSeconds.toDouble()),
                   thumbColor: MyColours.backgroundGreen,
                   activeColor: MyColours.darkTeal,
                   inactiveColor: MyColours.black,
                   onChanged: (double value) {
                     setState(() {
                       audioPlayer.seekTo(Duration(seconds: value.toInt()));
-                      _currentDuration = Duration(seconds: value.toInt());
+                      currentDuration = Duration(seconds: value.toInt());
                     });
                   },
                 ),
               ),
-              Text(_formatTime(_audioDuration.inSeconds.toDouble())),
+              Text(_formatTime(audioDuration.inSeconds.toDouble())),
           ]),
         ]),
       ),
