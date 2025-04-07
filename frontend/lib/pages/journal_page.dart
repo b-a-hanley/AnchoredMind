@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
+import '../services/json_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class JournalPage extends StatelessWidget {
-  const JournalPage({super.key});
+class JournalPage extends StatefulWidget {
+  final int index;
+
+  const JournalPage({super.key, required this.index});
+
+  @override
+  _JournalPageState createState() => _JournalPageState();
+}
+
+class _JournalPageState extends State<JournalPage> {
+  final jsonService = JsonService();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    int index = widget.index;
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
       appBar: MyAppBar(context, name: AppLocalizations.of(context)!.journal),
@@ -20,40 +36,71 @@ class JournalPage extends StatelessWidget {
         ),
         child: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
-          child: Column(
-            children: [
-            Text(
-              'Title',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 24.0,
-                decoration: TextDecoration.underline,
-              ),
-            ),Text(
-              '',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 22.0,
-              ),
-            ),
-            Text(
-              'Body',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 24.0,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-            Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 22.0,
-              ),
-            ),
-          ],
+          child: 
+              FutureBuilder<Map<String, dynamic>>(
+                        future: jsonService.getJournal(index), // Fetch gratitude gratitude asynchronously
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Text('Error: ${snapshot.error}');
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else if (!snapshot.hasData || snapshot.data == null) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          String title = snapshot.data!["title"] ?? "Untitled Gratitude";
+                          String mood = snapshot.data!["mood"] ?? "Unknown Mood";
+                          String journalEntry = snapshot.data!["journalEntry"] ?? "No entry";
+
+                          return Column(
+                            children: [
+                            Text(
+                              "Title",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),Text(
+                              title,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 22.0,
+                              ),
+                            ),
+                            Text(
+                              "Mood",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),Text(
+                              mood,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 22.0,
+                              ),
+                            ),
+                            Text(
+                              "Body",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                            Text(
+                              journalEntry,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 22.0,
+                              ),
+                            ),
+                          ]);
+                        },
+                      ),
         ),
-      ),
       ),
     );
   }
