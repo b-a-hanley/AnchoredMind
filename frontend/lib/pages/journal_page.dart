@@ -37,88 +37,89 @@ class JournalPageState extends State<JournalPage> {
         child: ConstrainedBox(
           constraints: const BoxConstraints.expand(),
           child: 
-              FutureBuilder<Map<String, dynamic>>(
-                        future: jsonService.getJournal(index), // Fetch gratitude gratitude asynchronously
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Text('Error: ${snapshot.error}');
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else if (!snapshot.hasData || snapshot.data == null) {
-                            return Text('Error: ${snapshot.error}');
-                          }
+            FutureBuilder<Map<String, dynamic>>(
+              future: jsonService.getJournal(index), // Fetch gratitude gratitude asynchronously
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data == null) {
+                  return Text('Error: ${snapshot.error}');
+                }
 
-                          String title = snapshot.data!["title"] ?? "Untitled Gratitude";
-                          String mood = snapshot.data!["mood"] ?? "Unknown Mood";
-                          String intensity = snapshot.data!["intensity"] ?? "Unknown Level";
-                          String time = snapshot.data!["time"] ?? "Unknown Time";
-                          String journalEntry = snapshot.data!["journalEntry"] ?? "No entry";
+                String title = snapshot.data!["title"] ?? "Untitled Gratitude";
+                String mood = snapshot.data!["mood"] ?? "Unknown Mood";
+                String intensity = snapshot.data!["intensity"] ?? "Unknown Level";
+                String time = snapshot.data!["time"] ?? "Unknown Time";
+                String journalEntry = snapshot.data!["journalEntry"] ?? "No entry";
 
-                          return Column(
-                            children: [
-                            Text(
-                              "Title",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            Text(
-                              title,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                            Text(
-                              "Mood",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            Text(
-                              "$intensity $mood",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                            Text(
-                              "Time",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            Text(
-                              time,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                            Text(
-                              "Body",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            Text(
-                              journalEntry,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                          ]);
-                        },
-                      ),
+                return Column(
+                  children: [
+                  Text(
+                    "Title",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    title,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                  Text(
+                    "Mood",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    "$intensity $mood",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                  Text(
+                    "Time",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    time,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                  Text(
+                    "Body",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    journalEntry,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                ]
+              );
+            },
+          ),
         ),
       ),
     );
