@@ -5,8 +5,10 @@ import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import '../services/json_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class JournalForm extends StatefulWidget {
+  const JournalForm({super.key});
   
   @override
   JournalFormState createState() => JournalFormState();  // Returning the state of the widget
@@ -14,22 +16,81 @@ class JournalForm extends StatefulWidget {
 
 class JournalFormState extends State<JournalForm> {
   final jsonService = JsonService();
-  final _formKey = GlobalKey<FormState>(); // Key to track form state
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _moodController = TextEditingController();
-  final TextEditingController _journalEntryController = TextEditingController();
+  final formKey = GlobalKey<FormState>(); // Key to track form state
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController moodController = TextEditingController();
+  final TextEditingController journalController = TextEditingController();
+  String mood = "";
+  int intensity = 0;
+  String selectedDate = "";
+
+  List<String> moodList = [
+    "Happy", 
+    "Content", 
+    "Excited", 
+    "Calm", 
+    "Tired", 
+    "Sad", 
+    "Lonely", 
+    "Angry", 
+    "Anxious", 
+    "Stressed", 
+    "Bored", 
+    "Confident", 
+    "Frustrated", 
+    "Hopeful", 
+    "Overwhelmed",
+  ];
+  List<String> moodLevel = [
+    "Mildly",
+    "Slightly",
+    "Somewhat",
+    "Moderately",
+    "Fairly",
+    "Strongly",
+    "Intensely"
+  ];
+
+  Future<void> pickDate() async {
+    DateTime? date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+
+    if (date == null) return;
+    TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (time == null) return;
+    final DateTime dateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.hour,
+      time.minute,
+    );
+
+    setState(() => selectedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime));
+  }
 
   void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      String title = _titleController.text;
-      String mood = _moodController.text;
-      String journalEntry = _journalEntryController.text;
-      
-      jsonService.postJournal(title, mood, journalEntry);
+    if (formKey.currentState!.validate()) {
+      String title = titleController.text;
+      String mood = moodController.text;
+      String journal = journalController.text;
+      String moodAdverb = moodLevel[intensity];
+
+      jsonService.postJournal(title, mood, moodAdverb, selectedDate, journal);
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => JournalListPage()),
       );
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Journal Added!')),
       );
@@ -37,10 +98,16 @@ class JournalFormState extends State<JournalForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    selectedDate = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
+  }
+
+  @override
   void dispose() {
-    _titleController.dispose();
-    _moodController.dispose();
-    _journalEntryController.dispose();
+    titleController.dispose();
+    moodController.dispose();
+    journalController.dispose();
     super.dispose();
   }
 
@@ -52,7 +119,7 @@ class JournalFormState extends State<JournalForm> {
       body:
     SingleChildScrollView(
     child: Form(
-        key: _formKey,
+        key: formKey,
         child: Column (
           children: [
             Container(
@@ -65,12 +132,12 @@ class JournalFormState extends State<JournalForm> {
               child: Column( 
                 children: [
                   TextFormField(
-                    controller: _titleController,
+                    controller: titleController,
                     maxLines: null,
                     decoration: InputDecoration(
                       labelText: 'Title',
                       border: OutlineInputBorder(),
-                      hintText: 'The day of the woods',
+                      hintText: 'Waking up today',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -79,31 +146,73 @@ class JournalFormState extends State<JournalForm> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    controller: _moodController,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      labelText: 'Mood',
-                      border: OutlineInputBorder(),
-                      hintText: 'Calm',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your mood';
-                      }
-                      return null;
-                    },
+                  SizedBox(height: 10),
+                  SizedBox(
+                      width: double.infinity, // Makes it take full width of parent
+                      child: DropdownMenu<String>(
+                          controller: moodController,
+                          label: Text("Mood"),
+                          onSelected: (String? value) {
+                            setState(() {
+                              mood = value!;
+                            });
+                          },
+                          dropdownMenuEntries: moodList.map(
+                                (String query) {
+                              return DropdownMenuEntry<String>(
+                                value: query,
+                                label: query,
+                              );
+                            },
+                          ).toList()
+                      )
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 10),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("Mild"),
+                        Slider(
+                          value: intensity.toDouble(),
+                          min: 0,
+                          max: 6,
+                          label: "Intensity",
+                          thumbColor: MyColours.backgroundGreen,
+                          activeColor: MyColours.darkTeal,
+                          inactiveColor: MyColours.black,
+                          onChanged: (double value) {
+                            setState(() {
+                              intensity = value.toInt();
+                            });
+                          },
+                        ),
+                        Text("Intense")
+                      ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          selectedDate == ""
+                              ? '${DateTime.now()}'
+                              : 'Time: ${selectedDate}',
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed:pickDate,
+                          child: Text(
+                            'Select Date',
+                            style: TextStyle(color: MyColours.backgroundGreen),
+                          ),
+                        ),
+                      ]
+                  ),
                   TextFormField(
                     minLines: 3,
                     maxLines: 16,
-                    controller: _journalEntryController,
+                    controller: journalController,
                     decoration: InputDecoration(
                       labelText: 'Journal Entry',
                       border: OutlineInputBorder(),
-                      hintText: 'The air was thick with the scent of damp earth and pine, and the soft crunch of leaves beneath my boots was the only sound as I wandered deeper into the woods. The sun had begun its slow descent, filtering through the skeletal branches in golden beams, setting the forest aglow in an amber haze. It was the kind of evening that felt like a whispered secret, something meant only for those who dared to listen. As I followed the meandering path, a hush fell over the trees. The birds, which had been chattering endlessly just moments before, fell silent. A breeze curled around me, its chill biting against my skin, yet the air carried something warm—something electric. Then I saw it. At the center of a small clearing, bathed in twilight, stood a figure—translucent and shimmering, as if woven from the very light that spilled through the canopy. It was neither man nor woman, neither young nor old. Their form shifted like mist caught in the wind, yet their presence was undeniable. My breath hitched. I should have been afraid, but the fear never came. Instead, a profound calm settled over me, as if I had stepped into a dream where time had unraveled, leaving only the present moment. The figure lifted a hand, and though their lips did not move, I felt words press against my mind—not spoken, but understood. You have found the place where the veil is thin. My pulse hammered in my ears. The veil? Between what? I wanted to ask, but before my thoughts could form into words, the figure turned, gliding through the clearing and vanishing into the dense thicket beyond. The golden light flickered and dimmed. The forest exhaled, and suddenly, the birds resumed their song. I stood there for what felt like hours, but when I finally glanced at my watch, only minutes had passed. My fingers trembled as I pulled my journal from my pack and scrawled down every detail, unwilling to let the moment slip away. What had I seen? A spirit? A trick of the light? Or something else entirely—something beyond words, beyond reason? I don’t know. But I do know this: the woods will never feel the same again.',
+                      hintText: 'Woke up feeling a bit overwhelmed by the tasks ahead. Took a few minutes to breathe deeply and recite a calming affirmation: "I am in control of my day, and I choose peace." Felt more grounded afterward. Planning to take regular breaks throughout the day to stay centered.',
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {

@@ -1,4 +1,4 @@
-import '../pages/feel_page.dart';
+import '../pages/feel_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '/pages/journal_list_page.dart';
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FeelPage()),
+                    MaterialPageRoute(builder: (context) => FeelListPage()),
                   );
                 },
                 child: Container(

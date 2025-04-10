@@ -50,6 +50,8 @@ class JournalPageState extends State<JournalPage> {
 
                           String title = snapshot.data!["title"] ?? "Untitled Gratitude";
                           String mood = snapshot.data!["mood"] ?? "Unknown Mood";
+                          String intensity = snapshot.data!["intensity"] ?? "Unknown Level";
+                          String time = snapshot.data!["time"] ?? "Unknown Time";
                           String journalEntry = snapshot.data!["journalEntry"] ?? "No entry";
 
                           return Column(
@@ -61,7 +63,8 @@ class JournalPageState extends State<JournalPage> {
                                 fontSize: 24.0,
                                 decoration: TextDecoration.underline,
                               ),
-                            ),Text(
+                            ),
+                            Text(
                               title,
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -75,8 +78,24 @@ class JournalPageState extends State<JournalPage> {
                                 fontSize: 24.0,
                                 decoration: TextDecoration.underline,
                               ),
-                            ),Text(
-                              mood,
+                            ),
+                            Text(
+                              "$intensity $mood",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 22.0,
+                              ),
+                            ),
+                            Text(
+                              "Time",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 24.0,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                            Text(
+                              time,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 22.0,

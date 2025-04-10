@@ -3,7 +3,6 @@ import 'package:frontend/components/my_button.dart';
 import '../components/my_colours.dart';
 import 'package:frontend/pages/gratitude_list_page.dart';
 import '../components/my_app_bar.dart';
-import '../components/my_colours.dart';
 import '../services/json_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

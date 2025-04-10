@@ -15,9 +15,9 @@
     "@mindful":{
         "description": "The Mindful section title"
     },
-    "breath": "Breath",
+    "breath": "Breathe",
     "@breath":{
-        "description": "The Breath section title"
+        "description": "The Breathe section title"
     },
     "addNew": "Add new",
     "@addNew":{

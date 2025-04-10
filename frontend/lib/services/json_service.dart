@@ -21,7 +21,7 @@ class JsonService {
     return '${directory.path}/anchoredMind.json';
   }
 
-   readJson() async {
+  readJson() async {
     if (jsonData["journal"].isNotEmpty|| jsonData["gratitude"].isNotEmpty) return null;
     final file = File(await getLocalFilePath());
 
@@ -57,13 +57,14 @@ class JsonService {
     return jsonData["journal"].length;
   }
 
-  postJournal(String title, String mood, String journalEntry) async {
+  postJournal(String title, String mood, String intensity, String time, String journal) async {
     await readJson();
     Map<String, String> newEntry = {
       "title": title,
       "mood": mood,
-      "journalEntry": journalEntry,
-      "time": DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())
+      "intensity": intensity,
+      "time": time,     
+      "journal": journal,
     };
     jsonData["journal"].add(newEntry);
     writeJson();
