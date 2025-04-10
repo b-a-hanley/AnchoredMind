@@ -1,115 +1,233 @@
 import 'package:flutter/material.dart';
-import '../components/my_app_bar.dart';
-import '../components/my_card.dart';
+import 'package:frontend/services/audio_player_service.dart';
+import 'package:frontend/services/haptic_service.dart';
 import '../components/my_colours.dart';
+import '../components/my_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:vibration/vibration.dart';
+import 'package:fl_chart/fl_chart.dart';
 
-class FeelPage extends StatelessWidget {
+class FeelPage extends StatefulWidget {
   const FeelPage({super.key});
+
+  @override
+  FeelPageState createState() =>
+      FeelPageState(); // Returning the state of the widget
+}
+
+class FeelPageState extends State<FeelPage> {
+  final hapticService = HapticService();
+  final audioService = AudioPlayerService();
+  List<int> pattern = [];
+  List<int> intensities = [];
+  List<FlSpot> graphData = [];
+  int currentDuration = 0;
+  String patternString = "";
+  String intensitiesString = "";
+  int sum = 0;
+  double chosenIntensity = 100;
+  bool loopingOn = false;
+  bool isPlaying = false;
+  bool audioOn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    pattern = hapticService.getPattern();
+    intensities = hapticService.getIntensities();
+    combineData(pattern, intensities);
+  }
+
+  void graphUpdate() {
+    sum = pattern.sublist(0, pattern.length - 1).reduce((a, b) => a + b);
+    Future.doWhile(() async {
+      await Future.delayed(Duration(milliseconds: 200));
+      bool isFinished = false;
+      setState(() {
+        if (currentDuration < sum) {
+          currentDuration += 200;
+        } else {
+          
+          currentDuration = 0;
+          isFinished = true; 
+          
+        }
+      });
+      if (isFinished&&loopingOn) {
+        hapticService.play(chosenIntensity);
+      }
+      if (isFinished&&!loopingOn||!isPlaying) {
+        isPlaying=false;
+        currentDuration=0;
+        audioService.stop();
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  void combineData(List<int> pattern, List<int> intensities) {
+    sum = 0;
+    for (int i = 0; i < pattern.length; i++) {
+      if (i > 0) {
+        sum = pattern.sublist(0, i).reduce((a, b) => a + b);
+      }
+
+      // patternString += "${pattern[i]} + ";
+      // intensitiesString += "${intensities[i]} + ";
+      graphData
+          .add(FlSpot(sum.toDouble(), (intensities[i].toDouble() / 255 * 100)));
+      graphData.add(FlSpot(sum.toDouble() + pattern[i].toDouble() - 1,
+          (intensities[i].toDouble() / 255 * 100)));
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hapticService.stop();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
-      appBar: MyAppBar(name: AppLocalizations.of(context)!.feel, context),
-      body: GridView.count(
-          primary: false,
-          padding: const EdgeInsets.all(10),
-          crossAxisSpacing: 15,
-          mainAxisSpacing: 15,
-          crossAxisCount: 2,
-          children: <Widget>[
-            MyCard(
-              name: "Queen",
-              icon: Icons.music_note,
-              onPressed: () {
-                anotherOneBitesTheDust();
-              }
+      appBar: MyAppBar(context, name: AppLocalizations.of(context)!.feel),
+      body: Column(children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: AspectRatio(
+            aspectRatio: 0.6,
+            child: LineChart(
+              LineChartData(
+                titlesData: FlTitlesData(
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      interval: 500,
+                      getTitlesWidget: (value, meta) => Text(
+                          '${value.toInt() / 1000} s',
+                          style:
+                              TextStyle(fontSize: 10, color: MyColours.white)),
+                    ),
+                  ),
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      interval: 20,
+                      getTitlesWidget: (value, meta) => Text(
+                          '${value.toInt()}%',
+                          style:
+                              TextStyle(fontSize: 10, color: MyColours.white)),
+                    ),
+                  ),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                ),
+                borderData: FlBorderData(
+                  show: true,
+                  border: Border.all(color: Colors.white.withOpacity(0.5)),
+                ),
+                minY: 0,
+                maxY: 100,
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: graphData,
+                    barWidth: 3,
+                    color: Colors.white,
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.white.withOpacity(0.2),
+                    ),
+                    dotData: FlDotData(show: false),
+                  ),
+                ],
+                extraLinesData: ExtraLinesData(
+                  verticalLines: [
+                    VerticalLine(
+                      x: currentDuration.toDouble(),
+                      color: MyColours.black,
+                      strokeWidth: 2,
+                      dashArray: [5, 5],
+                      label: VerticalLineLabel(
+                        show: true,
+                        alignment: Alignment.topRight,
+                        style: TextStyle(color: MyColours.white, fontSize: 10),
+                        labelResolver: (line) => '${currentDuration / 1000} s',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            MyCard(
-              name: "Waves",
-              icon: Icons.waves,
-              onPressed: () {
-                waves();
-              }
-            ),
-            MyCard(
-              name: "Heartbeat",
-              icon: Icons.monitor_heart_outlined,
-              onPressed: () {
-                heartrate();
-              }
-            ),
-            MyCard(
-              name: "Jazz",
-              icon: Icons.nightlife,
-              onPressed: () {
-                jazz();
-              }
-            ),
-          ],
+          ),
         ),
+        // Text(patternString),
+        // Text(intensitiesString),
+        Container(
+          margin: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: MyColours.primary,
+            borderRadius: BorderRadius.circular(32),
+          ),
+          child: Column(children: [
+            // Slider(
+            //   value: chosenIntensity,
+            //   min: 0,
+            //   max: 100,
+            //   label: "$chosenIntensity%",
+            //   thumbColor: MyColours.backgroundGreen,
+            //   activeColor: MyColours.darkTeal,
+            //   inactiveColor: MyColours.black,
+            //   onChanged: (double value) {
+            //     setState(() {
+            //       chosenIntensity = value;
+            //     });
+            //   },
+            // ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              IconButton(
+                icon: Icon(Icons.volume_off, size: 40),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: Icon(
+                  (isPlaying) ? Icons.stop_circle : Icons.play_circle,
+                  size: 40,
+                ),
+                onPressed: () {
+                  isPlaying = !isPlaying;
+                  if (isPlaying) {
+                    hapticService.play(chosenIntensity);
+                    currentDuration=0;
+                    graphUpdate();
+                    audioService.play();
+                  }
+                  else {
+                    currentDuration=0;
+                    hapticService.stop();
+                  }
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  (!loopingOn) ? Icons.repeat : Icons.repeat_on,
+                  size: 40,
+                ),
+                onPressed: () {
+                  setState(() {
+                  loopingOn = !loopingOn;
+                  });
+                },
+              )
+            ]),
+          ]),
+        ),
+      ]),
     );
-  }
-}
-
-void anotherOneBitesTheDust() async {
-  if (await Vibration.hasVibrator()) {
-    List<int> pattern = [
-      300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 127, 76, 80,
-      26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 26, 500, 26, 
-      127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76, 80, 26, 80, 
-      26, 500, 26, 127, 76, 80, 26, 80, 26, 300, 226, 300, 226, 300, 226, 300, 226, 127, 76, 127, 76, 127, 76,
-      80, 26, 80, 26, 500, 26, 127, 76, 80, 26, 80, 26,
-    ];
-    List<int> intensities = [
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0
-    ];
-
-    Vibration.vibrate(pattern: pattern, intensities: intensities);
-  }
-}
-
-void waves() async {
-  if (await Vibration.hasVibrator()) {
-    List<int> pattern = [
-      100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 900, 100, 
-    ];
-    List<int> intensities = [
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-    ];
-
-    Vibration.vibrate(pattern: pattern, intensities: intensities);
-  }
-}
-
-void heartrate() async {
-  if (await Vibration.hasVibrator()) {
-    List<int> pattern = [
-      700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700, 200, 700,
-    ];
-    List<int> intensities = [
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-    ];
-
-    Vibration.vibrate(pattern: pattern, intensities: intensities);
-  }
-}
-
-void jazz() async {
-  if (await Vibration.hasVibrator()) {
-    List<int> pattern = [
-      200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200, 600, 300, 200, 200,
-      600, 300, 200, 200, 600, 300, 200, 200, 600, 300,
-    ];
-    List<int> intensities = [
-      255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
-    ];
-
-    Vibration.vibrate(pattern: pattern, intensities: intensities);
   }
 }
