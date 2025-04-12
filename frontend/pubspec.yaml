@@ -31,18 +31,17 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_blue_plus: ^1.21.2
-  fl_chart: ^0.64.0
+  fl_chart: ^0.70.2
   flutter_localizations: 
     sdk: flutter
   intl: ^0.19.0
+  objectbox: ^2.4.0
+  objectbox_sync_flutter_libs: ^2.4.0
   path_provider: ^2.0.11
-  permission_handler: ^11.3.0
+  permission_handler: ^12.0.0+1
   provider: ^6.1.0
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  audioplayers: ^6.1.1
+  audioplayers: ^6.4.0
   vibration:
   video_player: ^2.9.2
   flick_video_player: ^0.9.0
@@ -50,7 +49,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.0.0
+  build_runner: ^2.4.6
+  objectbox_generator: ^2.4.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
