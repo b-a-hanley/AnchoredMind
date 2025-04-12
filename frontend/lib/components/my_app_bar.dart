@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/home_page.dart';
 import '../components/my_colours.dart';
 import '../pages/profile_page.dart';
 
@@ -16,7 +17,8 @@ class MyAppBar extends AppBar {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           BackButton(onPressed: () {Navigator.pop(context);}),
-          Row(
+          GestureDetector(
+            child: Row(
               children: [
                 Image.asset("assets/images/logo_clear.png", width: 40, height: 40),
                 Text(
@@ -24,6 +26,13 @@ class MyAppBar extends AppBar {
                   textAlign: TextAlign.center,
                 ),
               ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            }
           ),
           IconButton(
             icon: Icon(Icons.person, size: 32),
