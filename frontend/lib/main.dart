@@ -5,8 +5,13 @@ import 'package:provider/provider.dart';
 import 'providers/localeprovider.dart';
 import 'pages/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'services/local_db_service.dart';
 
-void main() {
+late LocalDBService localDbService;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalDBService.instance.init();
   runApp(
     ChangeNotifierProvider(
       create: (context) => LocaleProvider(),

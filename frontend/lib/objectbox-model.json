@@ -1,0 +1,102 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:2471396633917328088",
+      "lastPropertyId": "4:1552271777086520952",
+      "name": "Gratitude",
+      "properties": [
+        {
+          "id": "1:6768859771629705759",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3353597515299899053",
+          "name": "prompt",
+          "type": 9
+        },
+        {
+          "id": "3:7208261403333453917",
+          "name": "gratitude",
+          "type": 9
+        },
+        {
+          "id": "4:1552271777086520952",
+          "name": "time",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:4711068410205801635",
+      "lastPropertyId": "6:1338053904837870947",
+      "name": "Journal",
+      "properties": [
+        {
+          "id": "1:8911022526981100978",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7515719550566361150",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "3:7441421998771758238",
+          "name": "mood",
+          "type": 9
+        },
+        {
+          "id": "4:6741829604657874032",
+          "name": "intensity",
+          "type": 9
+        },
+        {
+          "id": "5:2440164674604385192",
+          "name": "time",
+          "type": 9
+        },
+        {
+          "id": "6:1338053904837870947",
+          "name": "journal",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "4:4711068410205801635",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    554087009581390749,
+    1760634824961285982
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    7799292967835273230,
+    8846385385924385410,
+    4523205058209862644,
+    2846331201677363276,
+    9164771420800125964,
+    1211230433869606260,
+    3357199333426530394,
+    2380887895461005645,
+    2251074992104067846,
+    8757761062959724505,
+    5219210123510469387,
+    5185122666846809564
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}
