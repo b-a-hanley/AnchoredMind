@@ -70,9 +70,91 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "5:773750519946823759",
+      "lastPropertyId": "3:4410257775744340684",
+      "name": "Heartrate",
+      "properties": [
+        {
+          "id": "1:7919842977219812998",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2763772398942048125",
+          "name": "heartrate",
+          "type": 9
+        },
+        {
+          "id": "3:4410257775744340684",
+          "name": "time",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:5348299389296696978",
+      "lastPropertyId": "5:9148562969846688580",
+      "name": "Profile",
+      "properties": [
+        {
+          "id": "1:8893602705435457337",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4904773657105553469",
+          "name": "language",
+          "type": 9
+        },
+        {
+          "id": "3:2761014153577303738",
+          "name": "heartrateMonitor",
+          "type": 9
+        },
+        {
+          "id": "4:6937893441676763795",
+          "name": "login",
+          "type": 9
+        },
+        {
+          "id": "5:9148562969846688580",
+          "name": "password",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:1345817825797861499",
+      "lastPropertyId": "3:3786986123741102404",
+      "name": "State",
+      "properties": [
+        {
+          "id": "1:7478721775908582385",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3393115230523397955",
+          "name": "page",
+          "type": 9
+        },
+        {
+          "id": "3:3786986123741102404",
+          "name": "action",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "4:4711068410205801635",
+  "lastEntityId": "7:1345817825797861499",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
