@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:frontend/services/heartrate_service.dart';
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
