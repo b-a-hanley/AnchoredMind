@@ -1,4 +1,5 @@
 
+import 'package:frontend/services/heartrate_service.dart';
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,13 +12,20 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-
+  HeartrateService heartrateService = HeartrateService();
   String? selectedDevice;
+  late Stream<List<String>> scan;
   
   @override
   void initState() {
     //HeartRateService.instance.scan();
+    scan = heartrateService.scan();
     super.initState();
+  }
+
+  Future<List<DropdownMenuEntry<String>>> getDeviceDropdownEntries() async {
+    final names = await heartrateService.scan().first; // Just wait for first result
+    return names.map((name) => DropdownMenuEntry(value: name, label: name)).toList();
   }
 
   Widget build(BuildContext context) {
@@ -76,13 +84,41 @@ class ProfilePageState extends State<ProfilePage> {
               ],
             ),
             Text(
-              'Heartrate device',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 24.0,
-              )
+                'Heartrate Devices',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 24.0,
+                )
             ),
-          ]),
+            StreamBuilder<List<String>>(
+                stream: scan,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    final deviceNames = snapshot.data!;
+                    return DropdownButton<String>(
+                      value: selectedDevice,
+                      hint: Text('Select a Device'),
+                      onChanged: (String? newDevice) {
+                        setState(() {
+                          selectedDevice = newDevice;
+                        });
+                      },
+                      items: deviceNames
+                          .map((deviceName) => DropdownMenuItem<String>(
+                                value: deviceName,
+                                child: Text(deviceName),
+                              ))
+                          .toList(),
+                    );
+                  } else {
+                    return Text('No devices found');
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
