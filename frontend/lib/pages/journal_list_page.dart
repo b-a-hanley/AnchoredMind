@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/json_service.dart';
 import 'journal_form.dart';
 import '../pages/journal_page.dart';
 import '../components/my_app_bar.dart';
 import 'package:frontend/services/local_db_service.dart';
 import '../models/journal.dart';
-import 'package:intl/intl.dart';
 import '../components/my_button.dart';
 import '../components/my_colours.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

@@ -48,6 +48,7 @@ class GratitudePageState extends State<GratitudePage> {
               borderRadius: BorderRadius.circular(15),
             ),
             child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, 
                 children: [
                   Text(
                     "Prompt",

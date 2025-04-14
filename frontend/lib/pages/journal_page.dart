@@ -51,7 +51,9 @@ class JournalPageState extends State<JournalPage> {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Expanded(
-            child: Column(children: [
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
               //Text(index.toString()),
               Text(
                 "Title",
