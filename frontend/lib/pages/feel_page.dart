@@ -46,10 +46,8 @@ class FeelPageState extends State<FeelPage> {
         if (currentDuration < sum) {
           currentDuration += 200;
         } else {
-          
           currentDuration = 0;
-          isFinished = true; 
-          
+          isFinished = true;
         }
       });
       if (isFinished&&loopingOn) {
@@ -61,7 +59,6 @@ class FeelPageState extends State<FeelPage> {
         audioService.stop();
         return false;
       }
-
       return true;
     });
   }
@@ -72,7 +69,6 @@ class FeelPageState extends State<FeelPage> {
       if (i > 0) {
         sum = pattern.sublist(0, i).reduce((a, b) => a + b);
       }
-
       // patternString += "${pattern[i]} + ";
       // intensitiesString += "${intensities[i]} + ";
       graphData
@@ -205,7 +201,7 @@ class FeelPageState extends State<FeelPage> {
                     hapticService.play(chosenIntensity);
                     currentDuration=0;
                     graphUpdate();
-                    audioService.play();
+                    //audioService.play();
                   }
                   else {
                     currentDuration=0;
