@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/json_service.dart';
-import 'gratitude_form.dart';
+import 'package:frontend/services/local_db_service.dart';
+import '../models/gratitude.dart';
+import '../pages/gratitude_form.dart';
 import '../pages/gratitude_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_button.dart';
@@ -15,13 +16,22 @@ class GratitudeListPage extends StatefulWidget {
 }
 
 class GratitudeListPageState extends State<GratitudeListPage> {
-  final jsonService = JsonService();
-  late Future<int> gratitudeLength;
+  final SearchController searchController = SearchController();
+  final localDbService = LocalDBService.instance;
+  List<Gratitude> gratitudes = [];
+  //bool ascending = true;
 
   @override
   void initState() {
     super.initState();
-    gratitudeLength = jsonService.getGratitudeLength();
+    gratitudes = localDbService.getAllGratitudes();
+    searchController.addListener(search);
+  }
+
+  search() {
+    setState(() {
+      gratitudes = localDbService.searchGratitudes(searchController.text);
+    });
   }
 
   @override
@@ -31,82 +41,53 @@ class GratitudeListPageState extends State<GratitudeListPage> {
       appBar: MyAppBar(context, name: AppLocalizations.of(context)!.gratitude),
       body: Column(
           children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              child: SearchBar(
+                controller: searchController,
+                hintText: 'Search here',
+                leading: Icon(Icons.search),
+                // trailing: [
+                //   IconButton(
+                //     icon: Icon(Icons.sort),
+                //     onPressed: () {
+                //       setState(() {
+                //         ascending = !ascending;
+                //       });
+                //       search();
+                //     },
+                //   ),
+                // ],
+              ),
+            ),
             Expanded(
-              child: FutureBuilder<int>(
-                future: gratitudeLength,
-                builder: (context, lengthSnapshot) {
-                  if (lengthSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (lengthSnapshot.hasError) {
-                    return Center(child: Text("Error loading entries."));
-                  } else if (!lengthSnapshot.hasData ||
-                      lengthSnapshot.data == 0) {
-                    return Center(child: Text("No entries available."));
-                  }
-
-                  int itemCount = lengthSnapshot.data!;
-
-                  return ListView.builder(
-                    itemCount: itemCount,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: MyColours.lightTeal,
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: FutureBuilder<Map<String, dynamic>>(
-                          future: jsonService.getGratitude(index),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return ListTile(
-                                title: Text("Loading..."),
-                                subtitle: Text("Loading..."),
-                              );
-                            } else if (snapshot.hasError) {
-                              return ListTile(
-                                title: Text("Error loading gratitude"),
-                                subtitle: Text("Please try again later."),
-                              );
-                            } else if (!snapshot.hasData ||
-                                snapshot.data == null) {
-                              return ListTile(
-                                title: Text("No gratitude found"),
-                                subtitle: Text("No mood data available."),
-                              );
-                            }
-
-                            String title =
-                                snapshot.data!["prompt"] ?? "Untitled prompt";
-                            String gratitude =
-                                snapshot.data!["gratitude"] ?? "Unknown gratitude";
-                            String date =
-                                snapshot.data!["time"] ?? "Unknown time";
-
-                            return ListTile(
-                              title: Text(title),
-                              subtitle: Text(date),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => GratitudePage(index: index)),
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      );
-                    },
+              child: ListView.builder(
+                itemCount: gratitudes.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: MyColours.lightTeal,
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      title: Text(gratitudes[index].prompt),
+                      subtitle: Text(gratitudes[index].time),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GratitudePage(index: gratitudes[index].id)),
+                        );
+                      },
+                    )
+                    
                   );
-                },
+                }
               ),
             ),
             MyButton(
-              name: AppLocalizations.of(context)!.addNew,
+              name: AppLocalizations.of(context)!.add,
               icon: Icons.add,
               onPressed: () {
                 Navigator.push(
@@ -117,7 +98,6 @@ class GratitudeListPageState extends State<GratitudeListPage> {
             ),
           ],
         ),
-
     );
   }
 }

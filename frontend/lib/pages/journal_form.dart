@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/components/my_button.dart';
 import 'package:frontend/pages/journal_list_page.dart';
+import 'package:frontend/services/local_db_service.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import '../services/json_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../models/journal.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class JournalForm extends StatefulWidget {
-  const JournalForm({super.key});
-  
+  final int index;
+
+  const JournalForm({super.key, this.index = 0});
+
   @override
-  JournalFormState createState() => JournalFormState();  // Returning the state of the widget
+  JournalFormState createState() => JournalFormState();
 }
 
 class JournalFormState extends State<JournalForm> {
   final jsonService = JsonService();
+  final localDbService = LocalDBService.instance;
   final formKey = GlobalKey<FormState>(); // Key to track form state
   final TextEditingController titleController = TextEditingController();
   final TextEditingController moodController = TextEditingController();
   final TextEditingController journalController = TextEditingController();
   String mood = "";
   int intensity = 0;
+  String pageType = "add";
   String selectedDate = "";
 
   List<String> moodList = [
@@ -51,6 +57,29 @@ class JournalFormState extends State<JournalForm> {
     "Intensely"
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.index!=0) {
+      pageType="edit";
+      Journal journal = LocalDBService.instance.getJournal(widget.index);
+      titleController.text = journal.title;
+      mood = journal.mood;
+      intensity = moodLevel.indexOf(journal.intensity);
+      selectedDate = journal.time;
+      journalController.text = journal.journal;
+    }
+    else {selectedDate = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());}
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    moodController.dispose();
+    journalController.dispose();
+    super.dispose();
+  }
+
   Future<void> pickDate() async {
     DateTime? date = await showDatePicker(
       context: context,
@@ -77,38 +106,38 @@ class JournalFormState extends State<JournalForm> {
     setState(() => selectedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime));
   }
 
-  void _submitForm() {
+  void submitForm() {
     if (formKey.currentState!.validate()) {
       String title = titleController.text;
-      String mood = moodController.text;
       String journal = journalController.text;
       String moodAdverb = moodLevel[intensity];
 
-      jsonService.postJournal(title, mood, moodAdverb, selectedDate, journal);
-
+      localDbService.postJournal(
+        Journal(
+          id: widget.index,
+          title: title,
+          mood: mood,
+          intensity: moodAdverb,
+          time: selectedDate,
+          journal: journal
+        ) 
+      );
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => JournalListPage()),
       );
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Journal Added!')),
-      );
+
+      if (widget.index==0){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Journal Added!')),
+        );
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Journal Edited!')),
+        );
+      }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    selectedDate = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
-  }
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    moodController.dispose();
-    journalController.dispose();
-    super.dispose();
   }
 
   @override
@@ -131,6 +160,7 @@ class JournalFormState extends State<JournalForm> {
               ),
               child: Column( 
                 children: [
+                  //Text(widget.index.toString()),
                   TextFormField(
                     controller: titleController,
                     maxLines: null,
@@ -150,8 +180,8 @@ class JournalFormState extends State<JournalForm> {
                   SizedBox(
                       width: double.infinity, // Makes it take full width of parent
                       child: DropdownMenu<String>(
-                          controller: moodController,
                           label: Text("Mood"),
+                          initialSelection: mood,
                           onSelected: (String? value) {
                             setState(() {
                               mood = value!;
@@ -212,7 +242,7 @@ class JournalFormState extends State<JournalForm> {
                     decoration: InputDecoration(
                       labelText: 'Journal Entry',
                       border: OutlineInputBorder(),
-                      hintText: 'Woke up feeling a bit overwhelmed by the tasks ahead. Took a few minutes to breathe deeply and recite a calming affirmation: "I am in control of my day, and I choose peace." Felt more grounded afterward. Planning to take regular breaks throughout the day to stay centered.',
+                      hintText: "Woke up feeling a bit overwhelmed by the tasks ahead. The thought of everything I needed to do today felt like a heavy weight pressing on my mind. I took a few minutes to sit in silence, focusing on my breath. Slowly inhaling and exhaling, I felt the tension start to release. After a couple of deep breaths, I recited my calming affirmation: 'I am in control of my day, and I choose peace.' The words began to settle into my mind, and I could feel my racing thoughts start to slow down. I decided to write down my tasks for the day, breaking them into smaller, more manageable steps. This helped me see that I could handle everything if I took it one thing at a time. I felt more grounded afterward, realizing that I didn’t need to rush or panic. I also planned to take regular breaks throughout the day, whether it’s stepping outside for a few minutes of fresh air or just closing my eyes to reset. Knowing I have these moments to look forward to makes the day seem less overwhelming. I also set a reminder on my phone to pause and breathe deeply, even during moments that feel busy. I’m feeling more hopeful now and ready to face whatever comes my way, knowing I can find calm even in the chaos.",
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -224,13 +254,14 @@ class JournalFormState extends State<JournalForm> {
                   ),
                 ]),
               ),
-            MyButton(
-              name: AppLocalizations.of(context)!.addNew,
-              icon: Icons.add,
-              onPressed: _submitForm,
-            ),
-          ]
-        ),),
+              MyButton(
+                name: (pageType=="edit") ? AppLocalizations.of(context)!.edit : AppLocalizations.of(context)!.add,
+                icon: (pageType=="edit") ? Icons.edit : Icons.add,
+                onPressed: submitForm,
+              ),
+            ]
+          ),
+        ),
       ),
     );
   }

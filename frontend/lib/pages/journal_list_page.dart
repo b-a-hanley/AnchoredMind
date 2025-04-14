@@ -3,6 +3,9 @@ import 'package:frontend/services/json_service.dart';
 import 'journal_form.dart';
 import '../pages/journal_page.dart';
 import '../components/my_app_bar.dart';
+import 'package:frontend/services/local_db_service.dart';
+import '../models/journal.dart';
+import 'package:intl/intl.dart';
 import '../components/my_button.dart';
 import '../components/my_colours.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,13 +18,22 @@ class JournalListPage extends StatefulWidget {
 }
 
 class JournalListPageState extends State<JournalListPage> {
-  final jsonService = JsonService();
-  late Future<int> gratitudeLengthFuture;
+  final SearchController searchController = SearchController();
+  final localDbService = LocalDBService.instance;
+  List<Journal> journals = [];
+  //bool ascending = true;
 
   @override
   void initState() {
     super.initState();
-    gratitudeLengthFuture = jsonService.getJournalLength(); // Fetch gratitude length on init
+    journals = localDbService.getAllJournals();
+    searchController.addListener(search);
+  }
+
+  search() {
+    setState(() {
+      journals = localDbService.searchJournals(searchController.text);
+    });
   }
 
   @override
@@ -31,81 +43,55 @@ class JournalListPageState extends State<JournalListPage> {
       appBar: MyAppBar(context, name: AppLocalizations.of(context)!.journal),
       body: Column(
         children: [
-          Expanded(
-            child: FutureBuilder<int>(
-              future: gratitudeLengthFuture, // Fetch the gratitude length asynchronously
-              builder: (context, lengthSnapshot) {
-                if (lengthSnapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator()); // Show loading indicator while fetching length
-                } else if (lengthSnapshot.hasError) {
-                  return Center(child: Text("Error loading entries.")); // Error message
-                } else if (!lengthSnapshot.hasData || lengthSnapshot.data == 0) {
-                  return Center(child: Text("No entries available.")); // No entries message
-                }
-
-                // Once length is fetched, proceed with loading gratitude entries
-                int itemCount = lengthSnapshot.data!;
-
-                return ListView.builder(
-                  itemCount: itemCount,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      color: MyColours.lightTeal,
-                      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), // Rounded corners
-                      ),
-                      child: FutureBuilder<Map<String, dynamic>>(
-                        future: jsonService.getJournal(index), // Fetch gratitude gratitude asynchronously
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return ListTile(
-                              title: Text("Loading..."), // Placeholder text while loading
-                              subtitle: Text("Loading..."),
-                              trailing: Text("Loading..."),
-                            );
-                          } else if (snapshot.hasError) {
-                            return ListTile(
-                              title: Text("Error loading gratitude"),
-                              subtitle: Text("Please try again later."),
-                            );
-                          } else if (!snapshot.hasData || snapshot.data == null) {
-                            return ListTile(
-                              title: Text("No gratitude found"),
-                              subtitle: Text("No mood data available."),
-                            );
-                          }
-
-                          String title = snapshot.data!["title"] ?? "Untitled journal";
-                          String mood = snapshot.data!["mood"] ?? "Unknown mood";
-                          String time = snapshot.data!["time"] ?? "Unknown time";
-
-                          return ListTile(
-                            title: Text(title),
-                            subtitle: Text(time),
-                            trailing: Text(
-                                mood,
-                                style: TextStyle(
-                                    fontSize: 18, color: MyColours.black
-                                )
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => JournalPage(index:index)),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: SearchBar(
+              controller: searchController,
+              hintText: 'Search here',
+              leading: Icon(Icons.search),
+              // trailing: [
+              //   IconButton(
+              //     icon: Icon(Icons.sort),
+              //     onPressed: () {
+              //       setState(() {
+              //         ascending = !ascending;
+              //       });
+              //       search();
+              //     },
+              //   ),
+              // ],
             ),
           ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: journals.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: MyColours.lightTeal,
+                    margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      title: Text(journals[index].title),
+                      subtitle: Text(journals[index].time),
+                      trailing: Text(journals[index].mood,
+                          style:
+                              TextStyle(fontSize: 18, color: MyColours.black)),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  JournalPage(index: journals[index].id)),
+                        );
+                      },
+                    ),
+                  );
+                }),
+          ),
           MyButton(
-            name: AppLocalizations.of(context)!.addNew,
+            name: AppLocalizations.of(context)!.add,
             icon: Icons.add,
             onPressed: () {
               Navigator.push(

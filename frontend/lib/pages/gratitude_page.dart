@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/gratitude_list_page.dart';
+import 'package:frontend/pages/gratitude_edit_form.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
-import '../services/json_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend/services/local_db_service.dart';
+import '../models/gratitude.dart';
 
 class GratitudePage extends StatefulWidget {
   final int index;
@@ -14,95 +17,122 @@ class GratitudePage extends StatefulWidget {
 }
 
 class GratitudePageState extends State<GratitudePage> {
-  final jsonService = JsonService();
+  final localDbService = LocalDBService.instance;
+  int index = 0;
+  String prompt = "";
+  String entry = "";
+  String time = "";
 
   @override
   void initState() {
     super.initState();
+    index = widget.index;
+    Gratitude gratitude = localDbService.getGratitude(index);
+    prompt = gratitude.prompt;
+    entry = gratitude.gratitude;
+    time = gratitude.time;
   }
 
   @override
   Widget build(BuildContext context) {
-    int index = widget.index;
     return Scaffold(
       backgroundColor: MyColours.backgroundGreen,
       appBar: MyAppBar(context, name: AppLocalizations.of(context)!.gratitude),
-      body: Container(
-        margin: EdgeInsets.all(15),
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          color: MyColours.teal,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: 
-              FutureBuilder<Map<String, dynamic>>(
-                        future: jsonService.getGratitude(index), // Fetch gratitude gratitude asynchronously
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Text('Error: ${snapshot.error}');
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          } else if (!snapshot.hasData || snapshot.data == null) {
-                            return Text('Error: ${snapshot.error}');
-                          }
-
-                          String prompt = snapshot.data!["prompt"] ?? "Unknown prompt";
-                          String gratitude = snapshot.data!["gratitude"] ?? "Unknown Gratitude";
-                          String time = snapshot.data!["time"] ?? "Unknown Time";
-
-                          return Column(
-                            children: [
-                            Text(
-                              "Prompt",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),Text(
-                              prompt,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                            Text(
-                              "Time",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            Text(
-                              time,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                            Text(
-                              "Gratitude",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 24.0,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                            Text(
-                              gratitude,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 22.0,
-                              ),
-                            ),
-                          ]);
+      body: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(15),
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            decoration: BoxDecoration(
+              color: MyColours.teal,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+                children: [
+                  Text(
+                    "Prompt",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    prompt,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                  Text(
+                    "Time",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    time,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                  Text(
+                    "Gratitude",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  Text(
+                    entry,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed:() => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => GratitudeEditForm(index: index))
+                          )
                         },
+                        child: Text(
+                          'Edit',
+                          style: TextStyle(color: MyColours.backgroundGreen),
+                        ),
                       ),
-        ),
-      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          localDbService.deleteGratitude(index);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Gratitude Deleted!")),
+                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => GratitudeListPage())
+                          );
+                        },
+                        child: Text(
+                          'Delete',
+                          style: TextStyle(color: MyColours.backgroundGreen),
+                        ),
+                      ),
+                    ],
+                  )
+                ]
+            ),
+          ),
+
+        ],
+      )
     );
   }
 }

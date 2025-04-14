@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/components/my_button.dart';
-import '../components/my_colours.dart';
-import 'package:frontend/pages/gratitude_list_page.dart';
+import 'package:intl/intl.dart';
+import '../models/gratitude.dart';
+import '../services/local_db_service.dart';
+import '../pages/gratitude_list_page.dart';
 import '../components/my_app_bar.dart';
-import '../services/json_service.dart';
+import '../components/my_colours.dart';
+import '../components/my_button.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GratitudeForm extends StatefulWidget {
-  
+
   @override
-  GratitudeFormState createState() => GratitudeFormState();  // Returning the state of the widget
+  GratitudeFormState createState() => GratitudeFormState();
 }
 
 class GratitudeFormState extends State<GratitudeForm> {
@@ -105,8 +108,8 @@ class GratitudeFormState extends State<GratitudeForm> {
     dropdown3Value = list[6];
   }
 
-  final jsonService = JsonService();
-  final formKey = GlobalKey<FormState>(); // Key to track form state
+  final localDbService = LocalDBService.instance;
+  final formKey = GlobalKey<FormState>(); 
   final TextEditingController prompt1Controller = TextEditingController();
   final TextEditingController gratitude1Controller = TextEditingController();
   final TextEditingController prompt2Controller = TextEditingController();
@@ -122,7 +125,29 @@ class GratitudeFormState extends State<GratitudeForm> {
       String gratitude2 = gratitude2Controller.text;
       String prompt3 = prompt3Controller.text;
       String gratitude3 = gratitude3Controller.text;
-      jsonService.postGratitude(prompt1, gratitude1, prompt2, gratitude2, prompt3, gratitude3);
+      //jsonService.postGratitude(prompt1, gratitude1, prompt2, gratitude2, prompt3, gratitude3);
+      String time = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
+      localDbService.postGratitude(
+        Gratitude(
+          prompt: prompt1,
+          gratitude: gratitude1,
+          time: time
+        ) 
+      );
+      localDbService.postGratitude(
+        Gratitude(
+          prompt: prompt2,
+          gratitude: gratitude2,
+          time: time
+        ) 
+      );
+      localDbService.postGratitude(
+        Gratitude(
+          prompt: prompt3,
+          gratitude: gratitude3,
+          time: time
+        ) 
+      );
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => GratitudeListPage()),
@@ -143,6 +168,10 @@ class GratitudeFormState extends State<GratitudeForm> {
     gratitude3Controller.dispose();
     super.dispose();
   }
+
+  String writeAbout(String prompt) {
+  return "Write about $prompt";
+}
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +197,6 @@ class GratitudeFormState extends State<GratitudeForm> {
                     controller: prompt1Controller,
                     label: Text("Choose a prompt"),
                     onSelected: (String? value) {
-                      // This is called when the user selects an item.
                       setState(() {
                         dropdown1Value = value!;
                       });
@@ -274,7 +302,7 @@ class GratitudeFormState extends State<GratitudeForm> {
                 ]),
               ),
             MyButton(
-              name: AppLocalizations.of(context)!.addNew,
+              name: AppLocalizations.of(context)!.add,
               icon: Icons.add,
               onPressed: submitForm,
             ),
@@ -284,8 +312,4 @@ class GratitudeFormState extends State<GratitudeForm> {
       ),
     );
   }
-}
-
-String writeAbout(String prompt) {
-  return "Write about $prompt";
 }
