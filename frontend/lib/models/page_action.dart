@@ -1,15 +1,15 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class State{
+class PageAction{
   @Id()
   int id;
-  String page;
   String action;
+  String time;
 
-  State({
+  PageAction({
     this.id = 0,
-    required this.page,
-    required this.action
+    required this.action,
+    required this.time,
   });
 }

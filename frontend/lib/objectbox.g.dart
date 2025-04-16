@@ -18,8 +18,8 @@ import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart';
 import 'models/gratitude.dart';
 import 'models/heartrate.dart';
 import 'models/journal.dart';
+import 'models/page_action.dart';
 import 'models/profile.dart';
-import 'models/state.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -119,7 +119,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(6, 5348299389296696978),
       name: 'Profile',
-      lastPropertyId: const obx_int.IdUid(5, 9148562969846688580),
+      lastPropertyId: const obx_int.IdUid(6, 505438787621063868),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -133,11 +133,6 @@ final _entities = <obx_int.ModelEntity>[
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 2761014153577303738),
-            name: 'heartrateMonitor',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 6937893441676763795),
             name: 'login',
             type: 9,
@@ -146,29 +141,34 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(5, 9148562969846688580),
             name: 'password',
             type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(6, 505438787621063868),
+            name: 'heartrateDevice',
+            type: 9,
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(7, 1345817825797861499),
-      name: 'State',
-      lastPropertyId: const obx_int.IdUid(3, 3786986123741102404),
+      id: const obx_int.IdUid(9, 1618743968801676447),
+      name: 'PageAction',
+      lastPropertyId: const obx_int.IdUid(3, 5868028459231783539),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 7478721775908582385),
+            id: const obx_int.IdUid(1, 3825001616838500694),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 3393115230523397955),
-            name: 'page',
+            id: const obx_int.IdUid(2, 7678288426908901506),
+            name: 'action',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 3786986123741102404),
-            name: 'action',
+            id: const obx_int.IdUid(3, 5868028459231783539),
+            name: 'time',
             type: 9,
             flags: 0)
       ],
@@ -211,11 +211,16 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(7, 1345817825797861499),
+      lastEntityId: const obx_int.IdUid(9, 1618743968801676447),
       lastIndexId: const obx_int.IdUid(0, 0),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [554087009581390749, 1760634824961285982],
+      retiredEntityUids: const [
+        554087009581390749,
+        1760634824961285982,
+        1345817825797861499,
+        1015374163973686694
+      ],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
         7799292967835273230,
@@ -229,7 +234,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
         2251074992104067846,
         8757761062959724505,
         5219210123510469387,
-        5185122666846809564
+        5185122666846809564,
+        2761014153577303738,
+        3393115230523397955,
+        7478721775908582385,
+        3786986123741102404,
+        65925834523909177,
+        229321463669362797,
+        336754630711547765,
+        5719932233073305838
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -367,16 +380,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Profile object, fb.Builder fbb) {
           final languageOffset = fbb.writeString(object.language);
-          final heartrateMonitorOffset =
-              fbb.writeString(object.heartrateMonitor);
           final loginOffset = fbb.writeString(object.login);
           final passwordOffset = fbb.writeString(object.password);
-          fbb.startTable(6);
+          final heartrateDeviceOffset = fbb.writeString(object.heartrateDevice);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, languageOffset);
-          fbb.addOffset(2, heartrateMonitorOffset);
           fbb.addOffset(3, loginOffset);
           fbb.addOffset(4, passwordOffset);
+          fbb.addOffset(5, heartrateDeviceOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -387,9 +399,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final languageParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 6, '');
-          final heartrateMonitorParam =
+          final heartrateDeviceParam =
               const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, '');
+                  .vTableGet(buffer, rootOffset, 14, '');
           final loginParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 10, '');
           final passwordParam = const fb.StringReader(asciiOptimization: true)
@@ -397,27 +409,27 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final object = Profile(
               id: idParam,
               language: languageParam,
-              heartrateMonitor: heartrateMonitorParam,
+              heartrateDevice: heartrateDeviceParam,
               login: loginParam,
               password: passwordParam);
 
           return object;
         }),
-    State: obx_int.EntityDefinition<State>(
+    PageAction: obx_int.EntityDefinition<PageAction>(
         model: _entities[4],
-        toOneRelations: (State object) => [],
-        toManyRelations: (State object) => {},
-        getId: (State object) => object.id,
-        setId: (State object, int id) {
+        toOneRelations: (PageAction object) => [],
+        toManyRelations: (PageAction object) => {},
+        getId: (PageAction object) => object.id,
+        setId: (PageAction object, int id) {
           object.id = id;
         },
-        objectToFB: (State object, fb.Builder fbb) {
-          final pageOffset = fbb.writeString(object.page);
+        objectToFB: (PageAction object, fb.Builder fbb) {
           final actionOffset = fbb.writeString(object.action);
+          final timeOffset = fbb.writeString(object.time);
           fbb.startTable(4);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, pageOffset);
-          fbb.addOffset(2, actionOffset);
+          fbb.addOffset(1, actionOffset);
+          fbb.addOffset(2, timeOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -426,12 +438,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final pageParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 6, '');
           final actionParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGet(buffer, rootOffset, 6, '');
+          final timeParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
           final object =
-              State(id: idParam, page: pageParam, action: actionParam);
+              PageAction(id: idParam, action: actionParam, time: timeParam);
 
           return object;
         })
@@ -511,29 +523,30 @@ class Profile_ {
   static final language =
       obx.QueryStringProperty<Profile>(_entities[3].properties[1]);
 
-  /// see [Profile.heartrateMonitor]
-  static final heartrateMonitor =
-      obx.QueryStringProperty<Profile>(_entities[3].properties[2]);
-
   /// see [Profile.login]
   static final login =
-      obx.QueryStringProperty<Profile>(_entities[3].properties[3]);
+      obx.QueryStringProperty<Profile>(_entities[3].properties[2]);
 
   /// see [Profile.password]
   static final password =
+      obx.QueryStringProperty<Profile>(_entities[3].properties[3]);
+
+  /// see [Profile.heartrateDevice]
+  static final heartrateDevice =
       obx.QueryStringProperty<Profile>(_entities[3].properties[4]);
 }
 
-/// [State] entity fields to define ObjectBox queries.
-class State_ {
-  /// see [State.id]
-  static final id = obx.QueryIntegerProperty<State>(_entities[4].properties[0]);
+/// [PageAction] entity fields to define ObjectBox queries.
+class PageAction_ {
+  /// see [PageAction.id]
+  static final id =
+      obx.QueryIntegerProperty<PageAction>(_entities[4].properties[0]);
 
-  /// see [State.page]
-  static final page =
-      obx.QueryStringProperty<State>(_entities[4].properties[1]);
-
-  /// see [State.action]
+  /// see [PageAction.action]
   static final action =
-      obx.QueryStringProperty<State>(_entities[4].properties[2]);
+      obx.QueryStringProperty<PageAction>(_entities[4].properties[1]);
+
+  /// see [PageAction.time]
+  static final time =
+      obx.QueryStringProperty<PageAction>(_entities[4].properties[2]);
 }
