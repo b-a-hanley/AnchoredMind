@@ -14,11 +14,13 @@ class HapticService {
 
   String asset = "";
   String name = "";
+  int id = 0;
   List<int> pattern = [];
   List<int> intensities = [];
   List<int> timeStamps = [];
 
   Future<void> setHaptic(CustomFeedback haptic) async {
+    id = haptic.getId();
     pattern = haptic.getPattern();
     intensities = haptic.getIntensities();
   }
@@ -30,6 +32,10 @@ class HapticService {
         intensities: intensities.map((indexIntensity) => indexIntensity ~/(chosenIntensity*100)).toList()
       );
     }
+  }
+
+  int getId() {
+    return id;
   }
 
   List<int> getIntensities() {
