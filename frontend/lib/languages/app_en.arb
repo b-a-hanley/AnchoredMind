@@ -20,11 +20,11 @@
         "description": "The Breathe section title"
     },
     "add": "Add new",
-    "@addNew":{
+    "@add":{
         "description": "The add new button text"
     },
     "edit": "Edit",
-    "@addNew":{
+    "@edit":{
         "description": "The edit button text"
     }
 }
