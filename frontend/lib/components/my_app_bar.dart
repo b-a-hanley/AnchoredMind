@@ -6,7 +6,7 @@ import '../pages/profile_page.dart';
 class MyAppBar extends AppBar {
   final String name;
   final BuildContext context;
-  // Constructor
+
   MyAppBar(this.context, {
     super.key,
     required this.name,
