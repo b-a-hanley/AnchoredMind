@@ -5,14 +5,14 @@ class Profile{
   @Id()
   int id;
   String language;
-  String heartrateMonitor;
+  String heartrateDevice;
   String login;
   String password;
 
   Profile({
     this.id = 0,
     required this.language,
-    required this.heartrateMonitor,
+    required this.heartrateDevice,
     required this.login,
     required this.password,
   });
