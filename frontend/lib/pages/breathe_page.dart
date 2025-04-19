@@ -3,16 +3,15 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-  
-class BreathPage extends StatefulWidget {
+
+class BreathePage extends StatefulWidget {
   @override
-  BreathPageState createState() => BreathPageState();
+  BreathePageState createState() => BreathePageState();
 }
 
-class BreathPageState extends State<BreathPage> {
+class BreathePageState extends State<BreathePage> {
   FlickManager? flickManager;
-  Object error ={};
-  bool _error =false;
+  Object error = {};
 
   @override
   void initState() {
@@ -20,14 +19,13 @@ class BreathPageState extends State<BreathPage> {
     try {
       flickManager = FlickManager(
         videoPlayerController: VideoPlayerController.asset(
-          "assets/videos/breath.mp4",
-        )..setLooping(true),
+          "assets/videos/breathe.mp4", //set breathe video
+        )..setLooping(true), //always loop video              
       );
     } catch (e) {
       debugPrint("Video init error: $e");
       setState(() {
         error = e;
-        _error = true;
       });
     }
   }
@@ -44,8 +42,8 @@ class BreathPageState extends State<BreathPage> {
       appBar: MyAppBar(context, name: AppLocalizations.of(context)!.breath),
       body: Column(
         children: [
-          Expanded(
-            child: _error || flickManager == null
+          Expanded( //expanded allows the video to take up full screen
+            child: error == {} || flickManager == null 
               ? Center(child: Text(error.toString(), style: TextStyle(fontSize: 18)))
               : FlickVideoPlayer(flickManager: flickManager!),
           ),
