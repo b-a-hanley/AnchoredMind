@@ -18,4 +18,5 @@ class GratitudeController extends BaseController<Gratitude> {
     query.close();
     return found;
   }
+  
 }
