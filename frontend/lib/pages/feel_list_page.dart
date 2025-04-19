@@ -18,7 +18,6 @@ class FeelListPage extends StatefulWidget {
 }
 
 class FeelListPageState extends State<FeelListPage> {
-  //LocalDBService localDbService = LocalDBService.instance;
   final ActionController actionController = ControllerManager.instance.actionController;
   final hapticService = HapticService();
   final waves = Waves();
