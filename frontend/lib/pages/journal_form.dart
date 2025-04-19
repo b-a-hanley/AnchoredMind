@@ -167,7 +167,7 @@ class JournalFormState extends State<JournalForm> {
                     decoration: InputDecoration(
                       labelText: 'Title',
                       border: OutlineInputBorder(),
-                      hintText: 'Waking up today',
+                      hintText: 'Waking up today (Do not enter sensitive data here)',
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
