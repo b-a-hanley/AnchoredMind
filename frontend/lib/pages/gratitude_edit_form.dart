@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/action_controller.dart';
+import 'package:frontend/controllers/controller_manager.dart';
+import '../controllers/gratitude_controller.dart';
 import '../models/gratitude.dart';
 import '../services/local_db_service.dart';
 import '../pages/gratitude_list_page.dart';
@@ -18,32 +21,33 @@ class GratitudeEditForm extends StatefulWidget {
 }
 
 class GratitudeEditFormState extends State<GratitudeEditForm> {
-  final localDbService = LocalDBService.instance;
+  final GratitudeController gratitudeController = ControllerManager.instance.gratitudeController;
   final formKey = GlobalKey<FormState>(); 
-  final TextEditingController gratitudeController = TextEditingController();
+  final TextEditingController gratitudeTEController = TextEditingController();
   String prompt = "";
   String time = "";
 
   @override
   void initState() {
     super.initState();
-    Gratitude gratitude = LocalDBService.instance.getGratitude(widget.index);
+    Gratitude gratitude = gratitudeController.get(widget.index)!;
     prompt = gratitude.prompt;
     time = gratitude.time;
-    gratitudeController.text = gratitude.gratitude;
+    gratitudeTEController.text = gratitude.gratitude;
   }
 
   @override
   void dispose() {
-    gratitudeController.dispose();
+    gratitudeTEController.dispose();
     super.dispose();
   }
 
   void submitForm() {
     if (formKey.currentState!.validate()) {
-      String gratitude = gratitudeController.text;
-      localDbService.postGratitude(
+      String gratitude = gratitudeTEController.text;
+      gratitudeController.put(
         Gratitude(
+          id: widget.index,
           prompt: prompt,
           gratitude: gratitude,
           time: time
@@ -85,7 +89,7 @@ class GratitudeEditFormState extends State<GratitudeEditForm> {
                 children: [
                   SizedBox(height: 15),
                   TextFormField(
-                    controller: gratitudeController,
+                    controller: gratitudeTEController,
                     maxLines: null,
                     decoration: InputDecoration(
                       fillColor: MyColours.lightTeal,

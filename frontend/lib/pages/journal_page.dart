@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/journal_list_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../controllers/controller_manager.dart';
+import '../pages/journal_list_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:frontend/services/local_db_service.dart';
+import '../controllers/journal_controller.dart';
 import '../models/journal.dart';
 import 'journal_form.dart';
 
@@ -17,7 +18,7 @@ class JournalPage extends StatefulWidget {
 }
 
 class JournalPageState extends State<JournalPage> {
-  final localDbService = LocalDBService.instance;
+  final JournalController journalController = ControllerManager.instance.journalController;
   int index = 0;
   String title = "";
   String mood = "";
@@ -29,7 +30,7 @@ class JournalPageState extends State<JournalPage> {
   void initState() {
     super.initState();
     index = widget.index;
-    Journal journal = localDbService.getJournal(index);
+    Journal journal = journalController.get(index)!;
     title = journal.title;
     mood = journal.mood;
     intensity = journal.intensity;
@@ -132,7 +133,7 @@ class JournalPageState extends State<JournalPage> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      localDbService.deleteJournal(index);
+                      journalController.delete(index);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Journal Deleted!")),
                       );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/services/local_db_service.dart';
+import '../controllers/controller_manager.dart';
+import '../controllers/gratitude_controller.dart';
 import '../models/gratitude.dart';
 import '../pages/gratitude_form.dart';
 import '../pages/gratitude_page.dart';
@@ -16,21 +17,21 @@ class GratitudeListPage extends StatefulWidget {
 }
 
 class GratitudeListPageState extends State<GratitudeListPage> {
-  final SearchController searchController = SearchController();
-  final localDbService = LocalDBService.instance;
+  final SearchController searchTEController = SearchController();
+  final GratitudeController gratitudeController = ControllerManager.instance.gratitudeController;
   List<Gratitude> gratitudes = [];
   //bool ascending = true;
 
   @override
   void initState() {
     super.initState();
-    gratitudes = localDbService.getAllGratitudes();
-    searchController.addListener(search);
+    gratitudes = gratitudeController.getAll();
+    searchTEController.addListener(search);
   }
 
   search() {
     setState(() {
-      gratitudes = localDbService.searchGratitudes(searchController.text);
+      gratitudes = gratitudeController.search(searchTEController.text);
     });
   }
 
@@ -44,7 +45,7 @@ class GratitudeListPageState extends State<GratitudeListPage> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               child: SearchBar(
-                controller: searchController,
+                controller: searchTEController,
                 hintText: 'Search here',
                 leading: Icon(Icons.search),
                 // trailing: [

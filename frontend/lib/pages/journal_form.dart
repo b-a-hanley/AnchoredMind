@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/components/my_button.dart';
-import 'package:frontend/pages/journal_list_page.dart';
-import 'package:frontend/services/local_db_service.dart';
-import '../components/my_app_bar.dart';
-import '../components/my_colours.dart';
-import '../services/json_service.dart';
-import '../models/journal.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import '../components/my_button.dart';
+import '../controllers/controller_manager.dart';
+import '../pages/journal_list_page.dart';
+import '../services/encrypt_service.dart';
+import '../components/my_app_bar.dart';
+import '../components/my_colours.dart';
+import '../controllers/journal_controller.dart';
+import '../models/journal.dart';
 class JournalForm extends StatefulWidget {
   final int index;
 
@@ -19,12 +19,12 @@ class JournalForm extends StatefulWidget {
 }
 
 class JournalFormState extends State<JournalForm> {
-  final jsonService = JsonService();
-  final localDbService = LocalDBService.instance;
+  final JournalController journalController = ControllerManager.instance.journalController;
   final formKey = GlobalKey<FormState>(); // Key to track form state
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController moodController = TextEditingController();
-  final TextEditingController journalController = TextEditingController();
+  final TextEditingController titleTEController = TextEditingController();
+  final TextEditingController moodTEController = TextEditingController();
+  final TextEditingController journalTEController = TextEditingController();
+  final EncryptService encryptService = EncryptService();
   String mood = "";
   int intensity = 0;
   String pageType = "add";
@@ -62,21 +62,21 @@ class JournalFormState extends State<JournalForm> {
     super.initState();
     if (widget.index!=0) {
       pageType="edit";
-      Journal journal = LocalDBService.instance.getJournal(widget.index);
-      titleController.text = journal.title;
+      Journal journal = journalController.get(widget.index)!;
+      titleTEController.text = journal.title;
       mood = journal.mood;
       intensity = moodLevel.indexOf(journal.intensity);
       selectedDate = journal.time;
-      journalController.text = journal.journal;
+      journalTEController.text = encryptService.decrypt(journal.journal);
     }
     else {selectedDate = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());}
   }
 
   @override
   void dispose() {
-    titleController.dispose();
-    moodController.dispose();
-    journalController.dispose();
+    titleTEController.dispose();
+    moodTEController.dispose();
+    journalTEController.dispose();
     super.dispose();
   }
 
@@ -108,18 +108,18 @@ class JournalFormState extends State<JournalForm> {
 
   void submitForm() {
     if (formKey.currentState!.validate()) {
-      String title = titleController.text;
-      String journal = journalController.text;
+      String title = titleTEController.text;
+      String journal = journalTEController.text;
       String moodAdverb = moodLevel[intensity];
 
-      localDbService.postJournal(
+      journalController.put(
         Journal(
           id: widget.index,
           title: title,
           mood: mood,
           intensity: moodAdverb,
           time: selectedDate,
-          journal: journal
+          journal: encryptService.encrypt(journal),
         ) 
       );
       Navigator.push(
@@ -162,7 +162,7 @@ class JournalFormState extends State<JournalForm> {
                 children: [
                   //Text(widget.index.toString()),
                   TextFormField(
-                    controller: titleController,
+                    controller: titleTEController,
                     maxLines: null,
                     decoration: InputDecoration(
                       labelText: 'Title',
@@ -238,7 +238,7 @@ class JournalFormState extends State<JournalForm> {
                   TextFormField(
                     minLines: 3,
                     maxLines: 16,
-                    controller: journalController,
+                    controller: journalTEController,
                     decoration: InputDecoration(
                       labelText: 'Journal Entry',
                       border: OutlineInputBorder(),

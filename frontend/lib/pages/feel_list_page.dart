@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import '../controllers/action_controller.dart';
+import '../controllers/controller_manager.dart';
 import '../services/haptic_service.dart';
-import '../objects/custom_feedback.dart';
+import '../models/custom_feedback.dart';
 import '../pages/feel_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_card.dart';
 import '../components/my_colours.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-class FeelListPage extends StatelessWidget {
+class FeelListPage extends StatefulWidget {
   FeelListPage({super.key});
+
+  @override
+  FeelListPageState createState() => FeelListPageState();
+}
+
+class FeelListPageState extends State<FeelListPage> {
+  //LocalDBService localDbService = LocalDBService.instance;
+  final ActionController actionController = ControllerManager.instance.actionController;
   final hapticService = HapticService();
   final waves = Waves();
   final queen = Queen();
@@ -37,6 +46,7 @@ class FeelListPage extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => FeelPage()),
                 );
+                actionController.putActionStr("feel.${hapticService.getId()}.page");
               }
             ),
             MyCard(
@@ -49,6 +59,7 @@ class FeelListPage extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => FeelPage()),
                 );
+                actionController.putActionStr("feel.${hapticService.getId()}.page");
               }
             ),
             MyCard(
@@ -61,6 +72,7 @@ class FeelListPage extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => FeelPage()),
                 );
+                actionController.putActionStr("feel.${hapticService.getId()}.page");
               }
             ),
             MyCard(
@@ -73,6 +85,7 @@ class FeelListPage extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => FeelPage()),
                 );
+                actionController.putActionStr("feel.${hapticService.getId()}.page");
               }
             ),
           ],

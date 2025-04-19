@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import '../controllers/gratitude_controller.dart';
+import '../services/encrypt_service.dart';
 import 'package:intl/intl.dart';
+import '../controllers/controller_manager.dart';
 import '../models/gratitude.dart';
-import '../services/local_db_service.dart';
 import '../pages/gratitude_list_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import '../components/my_button.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GratitudeForm extends StatefulWidget {
@@ -108,43 +109,43 @@ class GratitudeFormState extends State<GratitudeForm> {
     dropdown3Value = list[6];
   }
 
-  final localDbService = LocalDBService.instance;
+  final GratitudeController gratitudeController = ControllerManager.instance.gratitudeController;
   final formKey = GlobalKey<FormState>(); 
-  final TextEditingController prompt1Controller = TextEditingController();
-  final TextEditingController gratitude1Controller = TextEditingController();
-  final TextEditingController prompt2Controller = TextEditingController();
-  final TextEditingController gratitude2Controller = TextEditingController();
-  final TextEditingController prompt3Controller = TextEditingController();
-  final TextEditingController gratitude3Controller = TextEditingController();
+  final EncryptService encryptService = EncryptService();
+  final TextEditingController prompt1TEController = TextEditingController();
+  final TextEditingController gratitude1TEController = TextEditingController();
+  final TextEditingController prompt2TEController = TextEditingController();
+  final TextEditingController gratitude2TEController = TextEditingController();
+  final TextEditingController prompt3TEController = TextEditingController();
+  final TextEditingController gratitude3TEController = TextEditingController();
 
   void submitForm() {
     if (formKey.currentState!.validate()) {
-      String prompt1 = prompt1Controller.text;
-      String gratitude1 = gratitude1Controller.text;
-      String prompt2 = prompt2Controller.text;
-      String gratitude2 = gratitude2Controller.text;
-      String prompt3 = prompt3Controller.text;
-      String gratitude3 = gratitude3Controller.text;
-      //jsonService.postGratitude(prompt1, gratitude1, prompt2, gratitude2, prompt3, gratitude3);
+      String prompt1 = prompt1TEController.text;
+      String gratitude1 = gratitude1TEController.text;
+      String prompt2 = prompt2TEController.text;
+      String gratitude2 = gratitude2TEController.text;
+      String prompt3 = prompt3TEController.text;
+      String gratitude3 = gratitude3TEController.text;
       String time = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
-      localDbService.postGratitude(
+      gratitudeController.put(
         Gratitude(
           prompt: prompt1,
-          gratitude: gratitude1,
+          gratitude: encryptService.encrypt(gratitude1),
           time: time
         ) 
       );
-      localDbService.postGratitude(
+      gratitudeController.put(
         Gratitude(
           prompt: prompt2,
-          gratitude: gratitude2,
+          gratitude: encryptService.encrypt(gratitude2),
           time: time
         ) 
       );
-      localDbService.postGratitude(
+      gratitudeController.put(
         Gratitude(
           prompt: prompt3,
-          gratitude: gratitude3,
+          gratitude: encryptService.encrypt(gratitude3),
           time: time
         ) 
       );
@@ -160,12 +161,12 @@ class GratitudeFormState extends State<GratitudeForm> {
 
   @override
   void dispose() {
-    prompt1Controller.dispose();
-    gratitude1Controller.dispose();
-    prompt2Controller.dispose();
-    gratitude2Controller.dispose();
-    prompt3Controller.dispose();
-    gratitude3Controller.dispose();
+    prompt1TEController.dispose();
+    gratitude1TEController.dispose();
+    prompt2TEController.dispose();
+    gratitude2TEController.dispose();
+    prompt3TEController.dispose();
+    gratitude3TEController.dispose();
     super.dispose();
   }
 
@@ -194,7 +195,7 @@ class GratitudeFormState extends State<GratitudeForm> {
               child: Column( 
                 children: [
                   DropdownMenu<String>(
-                    controller: prompt1Controller,
+                    controller: prompt1TEController,
                     label: Text("Choose a prompt"),
                     onSelected: (String? value) {
                       setState(() {
@@ -212,7 +213,7 @@ class GratitudeFormState extends State<GratitudeForm> {
                   ),
                   SizedBox(height: 15),
                   TextFormField(
-                    controller: gratitude1Controller,
+                    controller: gratitude1TEController,
                     maxLines: null,
                     decoration: InputDecoration(
                       fillColor: MyColours.lightTeal,
@@ -229,7 +230,7 @@ class GratitudeFormState extends State<GratitudeForm> {
                   ),
                   SizedBox(height: 15),
                   DropdownMenu<String>(
-                      controller: prompt2Controller,
+                      controller: prompt2TEController,
                       label: Text("Choose a prompt"),
                       onSelected: (String? value) {
                         // This is called when the user selects an item.
@@ -248,7 +249,7 @@ class GratitudeFormState extends State<GratitudeForm> {
                   ),
                   SizedBox(height: 15),
                   TextFormField(
-                    controller: gratitude2Controller,
+                    controller: gratitude2TEController,
                     maxLines: null,
                     decoration: InputDecoration(
                       fillColor: MyColours.lightTeal,
@@ -265,7 +266,7 @@ class GratitudeFormState extends State<GratitudeForm> {
                   ),
                   SizedBox(height: 15),
                   DropdownMenu<String>(
-                      controller: prompt3Controller,
+                      controller: prompt3TEController,
                       label: Text("Choose a prompt"),
                       onSelected: (String? value) {
                         // This is called when the user selects an item.
@@ -284,7 +285,7 @@ class GratitudeFormState extends State<GratitudeForm> {
                   ),
                   SizedBox(height: 15),
                   TextFormField(
-                    controller: gratitude3Controller,
+                    controller: gratitude3TEController,
                     maxLines: null,
                     decoration: InputDecoration(
                       labelText: writeAbout(dropdown3Value),

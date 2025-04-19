@@ -1,4 +1,4 @@
-import 'package:frontend/objects/custom_feedback.dart';
+import 'package:frontend/models/custom_feedback.dart';
 import 'package:vibration/vibration.dart';
 
 class HapticService {

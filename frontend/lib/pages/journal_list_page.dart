@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/controller_manager.dart';
+import 'package:intl/intl.dart';
+import '../controllers/journal_controller.dart';
 import 'journal_form.dart';
 import '../pages/journal_page.dart';
 import '../components/my_app_bar.dart';
-import 'package:frontend/services/local_db_service.dart';
 import '../models/journal.dart';
 import '../components/my_button.dart';
 import '../components/my_colours.dart';
@@ -16,21 +18,21 @@ class JournalListPage extends StatefulWidget {
 }
 
 class JournalListPageState extends State<JournalListPage> {
-  final SearchController searchController = SearchController();
-  final localDbService = LocalDBService.instance;
+  final SearchController searchTEController = SearchController();
+  final JournalController journalController = ControllerManager.instance.journalController;
   List<Journal> journals = [];
   //bool ascending = true;
 
   @override
   void initState() {
     super.initState();
-    journals = localDbService.getAllJournals();
-    searchController.addListener(search);
+    journals = journalController.getAll();
+    searchTEController.addListener(search);
   }
 
   search() {
     setState(() {
-      journals = localDbService.searchJournals(searchController.text);
+      journals = journalController.search(searchTEController.text);
     });
   }
 
@@ -44,7 +46,7 @@ class JournalListPageState extends State<JournalListPage> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: SearchBar(
-              controller: searchController,
+              controller: searchTEController,
               hintText: 'Search here',
               leading: Icon(Icons.search),
               // trailing: [
@@ -71,8 +73,7 @@ class JournalListPageState extends State<JournalListPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
-                      title: Text(journals[index].title),
-                      subtitle: Text(journals[index].time),
+                      title: Text("${DateFormat('dd/MM').format(journals[index].time as DateTime)} ${journals[index].title}"),
                       trailing: Text(journals[index].mood,
                           style:
                               TextStyle(fontSize: 18, color: MyColours.black)),

@@ -1,8 +1,13 @@
 import 'dart:async';
-import 'package:frontend/services/heartrate_service.dart';
+import '../pages/action_list_page.dart';
+import '../pages/heart_rate_monitor.dart';
+import '../pages/heartrate_list_page.dart';
+import '../services/heartrate_service.dart';
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../controllers/controller_manager.dart';
+import '../controllers/profile_controller.dart';
 import '../providers/localeprovider.dart';
 import '../components/my_colours.dart';
 
@@ -14,21 +19,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
+  final ProfileController profileController = ControllerManager.instance.profileController;
   final HeartrateService heartrateService = HeartrateService();
   String? selectedDevice;
   List<String> deviceNames = [];
   bool isScanning = true;
+  bool rememberDevice = false;
   StreamSubscription? scanSubscription;
 
   @override
   void initState() {
     super.initState();
     startScan();
+    heartrateService.monitorHeartrate();
   }
 
   @override
   void dispose() {
     heartrateService.stopScan();
+    heartrateService.currentHeartrate.dispose();
     super.dispose();
   }
 
@@ -116,7 +125,12 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 10),
               deviceNames.isEmpty
                 ? Center(child: CircularProgressIndicator())
-                : DropdownMenu<String>(
+                // : (deviceNames.isEmpty&&!isScanning)
+                  // ? GestureDetector(
+                  //     onTap: startScan,
+                  //     child: Text("No devices found, try again?"),
+                  //   )
+                  : DropdownMenu<String>(
                     label: Text("Select Heartrate device"),
                     initialSelection: selectedDevice,
                     onSelected: (String? newDevice) {
@@ -133,10 +147,85 @@ class ProfilePageState extends State<ProfilePage> {
                           );
                         });
                       }
+                      
                     },
                     dropdownMenuEntries: getDeviceDropdownEntries(),
                   ),
+                (selectedDevice !=null)?
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: rememberDevice,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          rememberDevice =!rememberDevice;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Stored heartrate device!")),
+                        );
+                      },
+                    ),
+                    Text("Remember this device"),
+                  ],
+                )
+              : SizedBox(height:15),
+              ValueListenableBuilder<int>(
+                valueListenable: heartrateService.currentHeartrate,
+                builder: (context, value, _) {
+                  return value > 0
+                    ? Text(
+                        'Current Heart Rate: $value bpm',
+                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      )
+                    : Text(
+                        selectedDevice != null
+                          ? 'Waiting for heart rate data...'
+                          : 'Connect to a device to see heart rate',
+                        style: TextStyle(fontSize: 16),
+                      );
+                },
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ActionListPage()));
+                    },
+                    child: Text(
+                      'Actions',
+                      style: TextStyle(color: MyColours.backgroundGreen),
+                    ),
+                  ),
+
+              ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HeartrateListPage()));
+                    },
+                    child: Text(
+                      'Heartrates',
+                      style: TextStyle(color: MyColours.backgroundGreen),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HeartRateMonitor()));
+                    },
+                    child: Text(
+                      'Heartrate monitor',
+                      style: TextStyle(color: MyColours.backgroundGreen),
+                    ),
+                  ),
             ],
+
           ),
         ),
       ),

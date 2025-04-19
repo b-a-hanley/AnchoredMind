@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/action_controller.dart';
+import 'package:frontend/controllers/controller_manager.dart';
 import 'package:frontend/services/audio_player_service.dart';
 import 'package:frontend/services/haptic_service.dart';
 import '../components/my_colours.dart';
 import '../components/my_app_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
+
 
 class FeelPage extends StatefulWidget {
   const FeelPage({super.key});
@@ -16,6 +19,7 @@ class FeelPage extends StatefulWidget {
 
 class FeelPageState extends State<FeelPage> {
   final hapticService = HapticService();
+  final ActionController actionController = ControllerManager.instance.actionController;
   final audioService = AudioPlayerService();
   List<int> pattern = [];
   List<int> intensities = [];
@@ -27,11 +31,12 @@ class FeelPageState extends State<FeelPage> {
   double chosenIntensity = 100;
   bool loopingOn = false;
   bool isPlaying = false;
-  bool audioOn = false;
+  bool audioOn = true;
 
   @override
   void initState() {
     super.initState();
+    audioService.setAudio("audio/anchoredmind.mp3", "anchoredmind");
     pattern = hapticService.getPattern();
     intensities = hapticService.getIntensities();
     combineData(pattern, intensities);
@@ -52,6 +57,8 @@ class FeelPageState extends State<FeelPage> {
       });
       if (isFinished&&loopingOn) {
         hapticService.play(chosenIntensity);
+        if (audioOn) audioService.playStart();
+        actionController.putActionStr("feel.${hapticService.id}.loop");
       }
       if (isFinished&&!loopingOn||!isPlaying) {
         isPlaying=false;
@@ -81,7 +88,9 @@ class FeelPageState extends State<FeelPage> {
   @override
   void dispose() {
     super.dispose();
+    audioService.stop();
     hapticService.stop();
+    actionController.putActionStr("feel.${hapticService.id}.leave");
   }
 
   @override
@@ -187,8 +196,15 @@ class FeelPageState extends State<FeelPage> {
             // ),
             Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
               IconButton(
-                icon: Icon(Icons.volume_off, size: 40),
-                onPressed: () {},
+                icon: Icon(
+                  (audioOn) ? Icons.volume_up : Icons.volume_off,
+                  size: 40,
+                ),
+                onPressed: () {
+                  setState(() {
+                    audioOn = !audioOn;
+                  });
+                },
               ),
               IconButton(
                 icon: Icon(
@@ -200,12 +216,15 @@ class FeelPageState extends State<FeelPage> {
                   if (isPlaying) {
                     hapticService.play(chosenIntensity);
                     currentDuration=0;
+                    actionController.putActionStr("feel.${hapticService.getId()}.play");
                     graphUpdate();
-                    //audioService.play();
+                    if (audioOn) audioService.playStart();
                   }
                   else {
                     currentDuration=0;
+                    audioService.stop();
                     hapticService.stop();
+                    actionController.putActionStr("feel.${hapticService.getId()}.stop");
                   }
                 },
               ),

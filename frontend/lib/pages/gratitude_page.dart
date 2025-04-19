@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/controllers/controller_manager.dart';
 import 'package:frontend/pages/gratitude_list_page.dart';
 import 'package:frontend/pages/gratitude_edit_form.dart';
+import 'package:frontend/services/encrypt_service.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:frontend/services/local_db_service.dart';
+import '../controllers/gratitude_controller.dart';
 import '../models/gratitude.dart';
 
 class GratitudePage extends StatefulWidget {
@@ -17,7 +19,8 @@ class GratitudePage extends StatefulWidget {
 }
 
 class GratitudePageState extends State<GratitudePage> {
-  final localDbService = LocalDBService.instance;
+  final GratitudeController gratitudeController = ControllerManager.instance.gratitudeController;
+  final EncryptService encyptService = EncryptService();
   int index = 0;
   String prompt = "";
   String entry = "";
@@ -27,9 +30,9 @@ class GratitudePageState extends State<GratitudePage> {
   void initState() {
     super.initState();
     index = widget.index;
-    Gratitude gratitude = localDbService.getGratitude(index);
+    Gratitude gratitude = gratitudeController.get(index)!;
     prompt = gratitude.prompt;
-    entry = gratitude.gratitude;
+    entry = encyptService.decrypt(gratitude.gratitude);
     time = gratitude.time;
   }
 
@@ -112,7 +115,7 @@ class GratitudePageState extends State<GratitudePage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          localDbService.deleteGratitude(index);
+                          gratitudeController.delete(index);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Gratitude Deleted!")),
                           );
