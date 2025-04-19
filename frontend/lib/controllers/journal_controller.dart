@@ -4,12 +4,14 @@ import '../controllers/abstract_controller.dart';
 
 class JournalController extends BaseController<Journal> {
 
+  late final Box<Journal> _box;
+
   JournalController(Store store) {
-    box = store.box<Journal>();
+    _box = store.box<Journal>();
   }
 
   List<Journal> search(String text) {
-    final query = box.query(
+    final query = _box.query(
       Journal_.title.contains(text, caseSensitive: false)
         .or(Journal_.mood.contains(text, caseSensitive: false))
         .or(Journal_.time.contains(text, caseSensitive: false))

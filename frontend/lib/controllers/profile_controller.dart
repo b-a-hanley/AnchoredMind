@@ -5,8 +5,10 @@ import '../controllers/abstract_controller.dart';
 
 class ProfileController extends BaseController<Profile> {
 
+  late final Box<Profile> _box;
+
   ProfileController(Store store) {
-    box = store.box<Profile>();
+    _box = store.box<Profile>();
   }
 
   void init({String? language, String? heartrateDevice}) {
@@ -35,19 +37,19 @@ class ProfileController extends BaseController<Profile> {
   }
   
   String? getHeartrateDevice() {
-    return box.get(1)!.heartrateDevice;
+    return _box.get(1)!.heartrateDevice;
   }
 
   String? getLanguage() {
-    return box.get(1)!.language;
+    return _box.get(1)!.language;
   }
 
   String getLogin() {
-    return box.get(1)!.login;
+    return _box.get(1)!.login;
   }
 
   String getPassword() {
-    return box.get(1)!.password;
+    return _box.get(1)!.password;
   }
 
 }

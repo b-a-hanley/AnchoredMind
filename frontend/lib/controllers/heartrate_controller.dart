@@ -4,12 +4,14 @@ import '../controllers/abstract_controller.dart';
 
 class HeartrateController extends BaseController<Heartrate> {
 
+  late final Box<Heartrate> _box;
+  
   HeartrateController(Store store) {
-    box = store.box<Heartrate>();
+    _box = store.box<Heartrate>();
   }
 
   List<Heartrate> search(String text) {
-    Query<Heartrate> query = box.query(
+    Query<Heartrate> query = _box.query(
     Heartrate_.heartrate.contains(text, caseSensitive: false)
         .or(Heartrate_.time.contains(text, caseSensitive: false))
     ).build();

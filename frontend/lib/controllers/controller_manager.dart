@@ -8,7 +8,7 @@ import 'package:path/path.dart' as path;
 import '../objectbox.g.dart';
 
 class ControllerManager {
-  late final Store store;
+  late final Store _store;
 
   late final JournalController journalController;
   late final ActionController actionController;
@@ -22,16 +22,16 @@ class ControllerManager {
 
   Future<void> init() async {
     final dir = await getApplicationDocumentsDirectory();
-    store = await openStore(
+    _store = await openStore(
       directory: path.join(dir.path, "objectbox"),
       
     );
 
-    journalController = JournalController(store);
-    actionController = ActionController(store);
-    profileController = ProfileController(store);
-    gratitudeController = GratitudeController(store);
-    heartrateController = HeartrateController(store);
+    journalController = JournalController(_store);
+    actionController = ActionController(_store);
+    profileController = ProfileController(_store);
+    gratitudeController = GratitudeController(_store);
+    heartrateController = HeartrateController(_store);
   }
 
 }
