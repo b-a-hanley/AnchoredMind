@@ -28,11 +28,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  encrypt: ^5.0.1
   fancy_password_field: ^2.0.8
   flutter:
     sdk: flutter
   flutter_blue_plus: ^1.35.3 
   fl_chart: ^0.70.2
+  flutter_dotenv: ^5.1.0
   flutter_localizations: 
     sdk: flutter
   flutter_reactive_ble: ^5.0.2
@@ -75,6 +77,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/videos/breathe.mp4
     - assets/images/logo_clear.png
     - assets/audio/anchoredmind.mp3

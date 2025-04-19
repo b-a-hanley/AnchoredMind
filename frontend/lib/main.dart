@@ -1,5 +1,6 @@
-import 'package:frontend/pages/home_page.dart';
-import 'package:frontend/pages/login_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import './controllers/controller_manager.dart';
+import './pages/login_page.dart';
 import 'languages/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'; 
 import 'package:flutter/material.dart';
@@ -13,9 +14,13 @@ late LocalDBService localDbService;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LocalDBService.instance.init();
+  //creates accesses dot env
+  await dotenv.load(fileName: ".env");
+  //creates objectBox store
+  await ControllerManager.instance.init();
   requestPermissions();
   runApp(
+    //allows for providers to be accessed anywhere
     ChangeNotifierProvider(
       create: (context) => LocaleProvider(),
       child: AnchoredMind(),
@@ -37,17 +42,18 @@ class AnchoredMind extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     //calls current instance of locale provider
     final localeProvider = Provider.of<LocaleProvider>(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      supportedLocales: L10n.all,
-      locale: localeProvider.locale,
+      supportedLocales: L10n.all, //calls class of available languages
+      locale: localeProvider.locale, //use selected locale
       localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+        AppLocalizations.delegate, //controls app localisations
+        GlobalMaterialLocalizations.delegate, //control material localisations
+        GlobalWidgetsLocalizations.delegate, //controls text direction
       ],
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
