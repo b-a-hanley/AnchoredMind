@@ -1,13 +1,13 @@
-import '../pages/feel_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '/pages/journal_list_page.dart';
-import '/pages/gratitude_list_page.dart';
-import '/pages/mindful_page.dart';
-import '/pages/breathe_page.dart';
+import '../components/my_app_bar.dart';
 import '../components/my_card.dart';
 import '../components/my_colours.dart';
-import '../components/my_app_bar.dart';
+import '../pages/breathe_page.dart';
+import '../pages/feel_list_page.dart';
+import '../pages/journal_list_page.dart';
+import '../pages/mindful_page.dart';
+import '../pages/gratitude_list_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

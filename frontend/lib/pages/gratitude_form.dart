@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../controllers/gratitude_controller.dart';
-import '../services/encrypt_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import '../components/my_app_bar.dart';
+import '../components/my_button.dart';
+import '../components/my_colours.dart';
 import '../controllers/controller_manager.dart';
 import '../models/gratitude.dart';
 import '../pages/gratitude_list_page.dart';
-import '../components/my_app_bar.dart';
-import '../components/my_colours.dart';
-import '../components/my_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../controllers/gratitude_controller.dart';
+import '../services/encrypt_service.dart';
 
 class GratitudeForm extends StatefulWidget {
 

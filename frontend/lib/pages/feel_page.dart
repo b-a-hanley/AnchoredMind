@@ -1,12 +1,12 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/action_controller.dart';
-import 'package:frontend/controllers/controller_manager.dart';
-import 'package:frontend/services/audio_player_service.dart';
-import 'package:frontend/services/haptic_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../components/my_colours.dart';
 import '../components/my_app_bar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fl_chart/fl_chart.dart';
+import '../controllers/action_controller.dart';
+import '../controllers/controller_manager.dart';
+import '../services/audio_player_service.dart';
+import '../services/haptic_service.dart';
 
 
 class FeelPage extends StatefulWidget {

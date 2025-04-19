@@ -1,8 +1,8 @@
-import '../components/my_app_bar.dart';
-import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flick_video_player/flick_video_player.dart';
+import 'package:video_player/video_player.dart';
+import '../components/my_app_bar.dart';
 
 class BreathePage extends StatefulWidget {
   @override

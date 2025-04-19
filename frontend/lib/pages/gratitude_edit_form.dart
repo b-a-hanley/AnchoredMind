@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/controllers/action_controller.dart';
-import 'package:frontend/controllers/controller_manager.dart';
-import '../controllers/gratitude_controller.dart';
-import '../models/gratitude.dart';
-import '../services/local_db_service.dart';
-import '../pages/gratitude_list_page.dart';
 import '../components/my_app_bar.dart';
 import '../components/my_colours.dart';
 import '../components/my_button.dart';
+import '../controllers/controller_manager.dart';
+import '../controllers/gratitude_controller.dart';
+import '../models/gratitude.dart';
+import '../pages/gratitude_list_page.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

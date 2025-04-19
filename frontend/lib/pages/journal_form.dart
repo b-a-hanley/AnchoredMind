@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../components/my_button.dart';
-import '../controllers/controller_manager.dart';
-import '../pages/journal_list_page.dart';
-import '../services/encrypt_service.dart';
 import '../components/my_app_bar.dart';
+import '../components/my_button.dart';
 import '../components/my_colours.dart';
+import '../controllers/controller_manager.dart';
 import '../controllers/journal_controller.dart';
+import '../pages/journal_list_page.dart';
 import '../models/journal.dart';
+import '../services/encrypt_service.dart';
+
 class JournalForm extends StatefulWidget {
   final int index;
 

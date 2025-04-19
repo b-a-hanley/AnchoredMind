@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../controllers/controller_manager.dart';
-import '../models/heartrate.dart';
 import '../components/my_app_bar.dart';
-import '../services/local_db_service.dart';
 import '../components/my_colours.dart';
-
+import '../controllers/controller_manager.dart';
 import '../controllers/heartrate_controller.dart';
+import '../models/heartrate.dart';
 
 class HeartrateListPage extends StatefulWidget {
   const HeartrateListPage({super.key});

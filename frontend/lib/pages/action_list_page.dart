@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../controllers/action_controller.dart';
 import '../controllers/controller_manager.dart';
 import '../components/my_app_bar.dart';
 import '../models/page_action.dart';
 import '../components/my_colours.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ActionListPage extends StatefulWidget {
   const ActionListPage({super.key});
