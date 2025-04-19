@@ -1,8 +1,9 @@
+import 'package:frontend/models/page_action.dart';
+import 'package:intl/intl.dart';
 import '../models/journal.dart';
 import '../models/gratitude.dart';
 import '../models/heartrate.dart';
 import '../models/profile.dart';
-import '../models/state.dart';
 import '../objectbox.g.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
@@ -14,7 +15,7 @@ class LocalDBService {
   late final Box<Profile> profileBox;
   late final Box<Gratitude> gratitudeBox;
   late final Box<Heartrate> heartrateBox;
-  late final Box<State> stateBox;
+  late final Box<PageAction> actionBox;
 
   LocalDBService._internal();
 
@@ -25,6 +26,9 @@ class LocalDBService {
     _store = await openStore(directory: path.join(docsDir.path, "objectbox"));
     journalBox = _store.box<Journal>();
     gratitudeBox = _store.box<Gratitude>();
+    profileBox = _store.box<Profile>();
+    heartrateBox = _store.box<Heartrate>();
+    actionBox = _store.box<PageAction>();
   }
 
   List<Journal> getAllJournals() {
@@ -126,6 +130,17 @@ class LocalDBService {
     return heartrateBox.getAll();
   }
 
+  List<Heartrate> searchHeartrates(String text) {
+    Query<Heartrate> query = heartrateBox.query(
+    Heartrate_.heartrate.contains(text, caseSensitive: false)
+        .or(Heartrate_.time.contains(text, caseSensitive: false))
+    ).build();
+
+    List<Heartrate> found = query.find();
+    query.close();
+    return found;
+  }
+
   Heartrate getHeartrate(int id) {
     Heartrate? heartrate = heartrateBox.get(id);
     if (heartrate == null) {
@@ -143,8 +158,78 @@ class LocalDBService {
     return heartrateBox.count();
   }
 
-  int putHeartrate(Heartrate heartrate) {
-    return heartrateBox.put(heartrate);
+  int putHeartrate(heartrate) {
+    return heartrateBox.put(
+      Heartrate(
+        heartrate: heartrate,
+        time: DateTime.now().toString()
+      )
+    );
+  }
+
+  void putProfile({String? language, String? heartrateDevice}) {
+    Profile? currentProfile = getProfile();
+    Profile newProfile;
+    if (currentProfile==null) {
+      newProfile = Profile(
+        id: 1,
+        language: language ?? "en",
+        heartrateDevice: heartrateDevice ?? "",
+        login: "login",
+        password: "Password1",
+      );
+    }
+    else {
+      newProfile = Profile(
+        language: language ?? currentProfile.language,
+        heartrateDevice: heartrateDevice ?? currentProfile.heartrateDevice,
+        login: "login",
+        password: "Password1",
+      );
+    }
+    profileBox.put(newProfile);
+  }
+
+  Profile? getProfile() {  
+    return profileBox.get(1);
+  }
+
+  String? getProfileHeartrateDevice() {
+    return profileBox.get(1)!.heartrateDevice;
+  }
+
+  String? getProfileLanguage() {
+    return profileBox.get(1)!.language;
+  }
+
+  String getProfileLogin() {
+    return profileBox.get(1)!.login;
+  }
+
+  String getProfilePassword() {
+    return profileBox.get(1)!.password;
+  }
+
+  void putAction(String action) {
+    actionBox.put(PageAction(
+      action: action,
+      time: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())
+    ));
+  }
+
+  List<PageAction> getAllActions() {
+    return actionBox.getAll();
+  }
+
+  List<PageAction> searchActions(String text) {
+    Query<PageAction> query = actionBox.query(
+    PageAction_.action.contains(text, caseSensitive: false)
+        .or(PageAction_.time.contains(text, caseSensitive: false))
+    ).build();
+
+    List<PageAction> found = query.find();
+    query.close();
+    return found;
   }
   
 }
