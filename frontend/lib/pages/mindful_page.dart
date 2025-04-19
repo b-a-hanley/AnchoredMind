@@ -49,6 +49,7 @@ class MindfulPage extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       audioPlayer.setAudio(audioData[index][3],audioData[index][0]);
+                      audioPlayer.playButton();
                     },
                     child: Card(
                       color: MyColours.lightTeal,
