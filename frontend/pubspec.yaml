@@ -75,8 +75,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/videos/breath.mp4
+    - assets/videos/breathe.mp4
     - assets/images/logo_clear.png
+    - assets/audio/anchoredmind.mp3
     - assets/audio/PadraigTenMinuteMindfulnessOfBreathing.mp3
     - assets/audio/StillMind4MinuteBodyScan.mp3
     - assets/audio/UCSD10MinuteWisdom.mp3
