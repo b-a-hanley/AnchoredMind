@@ -10,7 +10,7 @@ import 'package:path/path.dart' as path;
 
 class LocalDBService {
   static final LocalDBService _instance = LocalDBService._internal();
-  late final Store _store;
+  late final Store store;
   late final Box<Journal> journalBox;
   late final Box<Profile> profileBox;
   late final Box<Gratitude> gratitudeBox;
@@ -22,13 +22,16 @@ class LocalDBService {
   static LocalDBService get instance => _instance;
 
   Future<void> init() async {
+    //get location to store database
     final docsDir = await getApplicationDocumentsDirectory();
-    _store = await openStore(directory: path.join(docsDir.path, "objectbox"));
-    journalBox = _store.box<Journal>();
-    gratitudeBox = _store.box<Gratitude>();
-    profileBox = _store.box<Profile>();
-    heartrateBox = _store.box<Heartrate>();
-    actionBox = _store.box<PageAction>();
+    //create database in location
+    store = await openStore(directory: path.join(docsDir.path, "objectbox"));
+    //create database entities
+    journalBox = store.box<Journal>();
+    gratitudeBox = store.box<Gratitude>();
+    profileBox = store.box<Profile>();
+    heartrateBox = store.box<Heartrate>();
+    actionBox = store.box<PageAction>();
   }
 
   List<Journal> getAllJournals() {
@@ -66,10 +69,6 @@ class LocalDBService {
 
   int getJournalLength() {  
     return journalBox.count();
-  }
-
-  int postJournal(Journal journal) {  
-    return journalBox.put(journal);
   }
 
   int putJournal(Journal journal) {  
@@ -112,10 +111,6 @@ class LocalDBService {
 
   int getGratitudeLength() {  
     return gratitudeBox.count();
-  }
-
-  int postGratitude(Gratitude gratitude) {  
-    return gratitudeBox.put(gratitude);
   }
 
   int putGratitude(Gratitude gratitude) {  
