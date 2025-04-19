@@ -85,7 +85,7 @@ class MyAudioPlayerState extends State<MyAudioPlayer> {
                 size: 40,
               ),
               onPressed: () {
-                audioPlayer.play();
+                audioPlayer.playButton();
               },
             ),
             IconButton(

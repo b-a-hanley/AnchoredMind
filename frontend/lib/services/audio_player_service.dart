@@ -25,10 +25,9 @@ class AudioPlayerService {
     audioPlayer.stop();
     asset = path;
     name = audioName;
-    await audioPlayer.play(AssetSource(asset));
   }
 
-  Future<void> play() async {
+  Future<void> playButton() async {
     if (asset.isEmpty) return;
     if (audioPlayer.state == PlayerState.paused) {
       await audioPlayer.resume();
@@ -40,9 +39,15 @@ class AudioPlayerService {
     }
   }
 
+  Future<void> playStart() async {
+    if (asset.isEmpty) return;
+    await audioPlayer.stop();
+    await audioPlayer.play(AssetSource(asset));
+  }
+
   Future<void> stop() async {
     if (asset.isEmpty) return;
-    await  audioPlayer.stop();
+    await audioPlayer.stop();
   }
 
   Future<Duration> getCurrentPosition() async {
