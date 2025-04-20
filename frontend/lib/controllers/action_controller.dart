@@ -5,10 +5,8 @@ import '../controllers/abstract_controller.dart';
 
 class ActionController extends BaseController<PageAction> {
   
-  late final Box<PageAction> _box;
-  
   ActionController(Store store) {
-    _box = store.box<PageAction>();
+    box = store.box<PageAction>();
   }
 
   int putActionStr(String actionStr) {
@@ -21,7 +19,7 @@ class ActionController extends BaseController<PageAction> {
   }
 
   List<PageAction> search(String text) {
-    Query<PageAction> query = _box.query(
+    Query<PageAction> query = box.query(
     PageAction_.action.contains(text, caseSensitive: false)
         .or(PageAction_.time.contains(text, caseSensitive: false))
     ).build();

@@ -1,11 +1,11 @@
-import 'package:frontend/controllers/journal_controller.dart';
-import 'package:frontend/controllers/action_controller.dart';
-import 'package:frontend/controllers/profile_controller.dart';
-import 'package:frontend/controllers/gratitude_controller.dart';
-import 'package:frontend/controllers/heartrate_controller.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import '../objectbox.g.dart';
+import '../controllers/action_controller.dart';
+import '../controllers/journal_controller.dart';
+import '../controllers/profile_controller.dart';
+import '../controllers/gratitude_controller.dart';
+import '../controllers/heartrate_controller.dart';
 
 class ControllerManager {
   late final Store _store;

@@ -13,55 +13,42 @@ class AudioPlayerService {
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
-  Duration _audioDuration = Duration.zero;
-  String asset = "audio/StillMind4MinuteBodyScan.mp3";
-  String name = "Four minute body scan";
-  Duration get audioDuration => _audioDuration;
+  String _asset = "audio/StillMind4MinuteBodyScan.mp3";
+  String _name = "Four minute body scan";
   Stream<Duration> get positionStream => audioPlayer.onPositionChanged;
   Stream<Duration> get durationStream => audioPlayer.onDurationChanged;
   Stream<PlayerState> get stateStream => audioPlayer.onPlayerStateChanged;
-
+  //set up new audio including path
   Future<void> setAudio(String path, String audioName) async {
     audioPlayer.stop();
-    asset = path;
-    name = audioName;
+    _asset = path;
+    _name = audioName;
   }
-
+  //for the my_audio_player button
   Future<void> playButton() async {
-    if (asset.isEmpty) return;
     if (audioPlayer.state == PlayerState.paused) {
       await audioPlayer.resume();
     } else if (audioPlayer.state == PlayerState.stopped||audioPlayer.state == PlayerState.completed) {
-      await audioPlayer.stop();
-      await audioPlayer.play(AssetSource(asset));
+      playStart();
     } else {
       await  audioPlayer.pause();
     }
   }
-
+  //simple play
   Future<void> playStart() async {
-    if (asset.isEmpty) return;
+    if (_asset.isEmpty) return;
     await audioPlayer.stop();
-    await audioPlayer.play(AssetSource(asset));
+    await audioPlayer.play(AssetSource(_asset));
   }
-
+  //stop audio
   Future<void> stop() async {
-    if (asset.isEmpty) return;
+    if (_asset.isEmpty) return;
     await audioPlayer.stop();
   }
-
-  Future<Duration> getCurrentPosition() async {
-    return await audioPlayer.getCurrentPosition() ?? Duration.zero;
-  }
-
-  PlayerState getCurrentState() {
-    return audioPlayer.state;
-  }
-
-  String getName() {
-    return name;
-  }
-
-  Future<void> seekTo(Duration position) async => await audioPlayer.seek(position);
+  //get current duration of the audio
+  Future<Duration> get currentPosition async => await audioPlayer.getCurrentPosition() ?? Duration.zero;
+  PlayerState get currentState => audioPlayer.state; //stop pause play completed
+  String get getName => _name; //get name
+  Future<void> seekTo(Duration position) async => await audioPlayer.seek(position); //seek by given amount
 
 }

@@ -2,16 +2,16 @@ import '../objectbox.g.dart';
 
 abstract class BaseController<T> {
   
-  late final Box<T> _box;  
+  late final Box<T> box;  
   
-  List<T> getAll() => _box.getAll();
+  List<T> getAll() => box.getAll();
 
-  T? get(int id) => _box.get(id);
+  T? get(int id) => box.get(id);
 
-  int put(T item) => _box.put(item);
+  int put(T item) => box.put(item);
 
-  bool delete(int id) => _box.remove(id);
+  bool delete(int id) => box.remove(id);
 
-  int getCount() => _box.count();
+  int getCount() => box.count();
 
 }

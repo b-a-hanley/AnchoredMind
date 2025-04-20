@@ -24,7 +24,7 @@ class HapticService {
     pattern = haptic.getPattern();
     intensities = haptic.getIntensities();
   }
-
+ 
   Future<void> play(chosenIntensity) async {
     if (await Vibration.hasVibrator()) { 
       Vibration.vibrate(

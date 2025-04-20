@@ -22,7 +22,7 @@ class MyAudioPlayerState extends State<MyAudioPlayer> {
   void initState() {
     super.initState();
     
-    audioName = audioPlayer.getName();
+    audioName = audioPlayer.getName;
 
     audioPlayer.positionStream.listen((position) {
       if (mounted) {
@@ -75,13 +75,13 @@ class MyAudioPlayerState extends State<MyAudioPlayer> {
             IconButton(
               icon: Icon(Icons.replay_10, size: 40),
               onPressed: () async {
-                final currentPosition = await audioPlayer.getCurrentPosition();
+                final currentPosition = await audioPlayer.currentPosition;
                 await audioPlayer.seekTo(Duration(milliseconds: currentPosition.inMilliseconds - 10000));
               },
             ),
             IconButton(
               icon: Icon(
-                (isPlaying) ? Icons.stop_circle : Icons.play_circle,
+                (isPlaying) ? Icons.pause_circle : Icons.play_circle,
                 size: 40,
               ),
               onPressed: () {
@@ -91,7 +91,7 @@ class MyAudioPlayerState extends State<MyAudioPlayer> {
             IconButton(
               icon: Icon(Icons.forward_10, size: 40),
               onPressed: () async {
-                final currentPosition = await audioPlayer.getCurrentPosition();
+                final currentPosition = await audioPlayer.currentPosition;
                 await audioPlayer.seekTo(Duration(milliseconds: currentPosition.inMilliseconds + 10000));
               },
             )
