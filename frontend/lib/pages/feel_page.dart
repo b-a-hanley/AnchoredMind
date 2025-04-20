@@ -69,19 +69,17 @@ class FeelPageState extends State<FeelPage> {
       return true;
     });
   }
-
+  //translates the haptic data to data points for graph
   void combineData(List<int> pattern, List<int> intensities) {
     sum = 0;
     for (int i = 0; i < pattern.length; i++) {
       if (i > 0) {
         sum = pattern.sublist(0, i).reduce((a, b) => a + b);
-      }
-      // patternString += "${pattern[i]} + ";
-      // intensitiesString += "${intensities[i]} + ";
-      graphData
-          .add(FlSpot(sum.toDouble(), (intensities[i].toDouble() / 255 * 100)));
-      graphData.add(FlSpot(sum.toDouble() + pattern[i].toDouble() - 1,
-          (intensities[i].toDouble() / 255 * 100)));
+      }//add all previous values and generate list
+      //add start of duration
+      graphData.add(FlSpot(sum.toDouble(), (intensities[i].toDouble() / 255 * 100)));
+      //add end of duration
+      graphData.add(FlSpot(sum.toDouble() + pattern[i].toDouble() - 1, (intensities[i].toDouble() / 255 * 100)));
     }
   }
 
@@ -102,48 +100,43 @@ class FeelPageState extends State<FeelPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: AspectRatio(
-            aspectRatio: 0.6,
+            aspectRatio: 0.6, //proportions of graph
             child: LineChart(
               LineChartData(
                 titlesData: FlTitlesData(
-                  bottomTitles: AxisTitles(
+                  bottomTitles: AxisTitles(//horiozntal seconds title 
                     sideTitles: SideTitles(
                       showTitles: true,
-                      interval: 500,
+                      interval: 500, //0.5 seconds
                       getTitlesWidget: (value, meta) => Text(
-                          '${value.toInt() / 1000} s',
-                          style:
-                              TextStyle(fontSize: 10, color: MyColours.white)),
+                          '${value.toInt() / 1000} s', //display seconds scale
+                          style: TextStyle(fontSize: 10, color: MyColours.white)),
                     ),
                   ),
-                  leftTitles: AxisTitles(
+                  leftTitles: AxisTitles(//vertical haptic % title
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 30,
-                      interval: 20,
+                      interval: 20, //20%
                       getTitlesWidget: (value, meta) => Text(
-                          '${value.toInt()}%',
-                          style:
-                              TextStyle(fontSize: 10, color: MyColours.white)),
+                          '${value.toInt()}%',//percent scale
+                          style: TextStyle(fontSize: 10, color: MyColours.white)),
                     ),
                   ),
-                  topTitles:
-                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles:
-                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:  AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 ),
                 borderData: FlBorderData(
-                  show: true,
+                  show: true, //graph perimeter colour
                   border: Border.all(color: Colors.white.withOpacity(0.5)),
                 ),
-                minY: 0,
-                maxY: 100,
+                minY: 0, //min percent of haptic
+                maxY: 100, //max percent of haptic
                 lineBarsData: [
-                  LineChartBarData(
-                    spots: graphData,
+                  LineChartBarData( 
+                    spots: graphData, //uses graph data
                     barWidth: 3,
                     color: Colors.white,
-                    belowBarData: BarAreaData(
+                    belowBarData: BarAreaData( //have faint colouring of bars
                       show: true,
                       color: Colors.white.withOpacity(0.2),
                     ),
@@ -152,8 +145,8 @@ class FeelPageState extends State<FeelPage> {
                 ],
                 extraLinesData: ExtraLinesData(
                   verticalLines: [
-                    VerticalLine(
-                      x: currentDuration.toDouble(),
+                    VerticalLine( //moving vertical line showing current point in haptic
+                      x: currentDuration.toDouble(), 
                       color: MyColours.black,
                       strokeWidth: 2,
                       dashArray: [5, 5],
@@ -162,7 +155,7 @@ class FeelPageState extends State<FeelPage> {
                         alignment: Alignment.topRight,
                         style: TextStyle(color: MyColours.white, fontSize: 10),
                         labelResolver: (line) => '${currentDuration / 1000} s',
-                      ),
+                      ), //describes current seconds
                     ),
                   ],
                 ),
