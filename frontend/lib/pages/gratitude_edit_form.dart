@@ -6,8 +6,8 @@ import '../controllers/controller_manager.dart';
 import '../controllers/gratitude_controller.dart';
 import '../models/gratitude.dart';
 import '../pages/gratitude_list_page.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../services/auth_service.dart';
 
 class GratitudeEditForm extends StatefulWidget {
   final int index;
@@ -22,6 +22,7 @@ class GratitudeEditFormState extends State<GratitudeEditForm> {
   final GratitudeController gratitudeController = ControllerManager.instance.gratitudeController;
   final formKey = GlobalKey<FormState>(); 
   final TextEditingController gratitudeTEController = TextEditingController();
+  final AuthService authService = AuthService();
   String prompt = "";
   String time = "";
 
@@ -46,6 +47,7 @@ class GratitudeEditFormState extends State<GratitudeEditForm> {
       gratitudeController.put(
         Gratitude(
           id: widget.index,
+          loginId: authService.getLogin,
           prompt: prompt,
           gratitude: gratitude,
           time: time

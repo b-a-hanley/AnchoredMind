@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/controller_manager.dart';
-import 'package:intl/intl.dart';
 import '../controllers/journal_controller.dart';
 import 'journal_form.dart';
 import '../pages/journal_page.dart';
@@ -73,10 +72,10 @@ class JournalListPageState extends State<JournalListPage> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
-                      title: Text("${DateFormat('dd/MM').format(journals[index].time as DateTime)} ${journals[index].title}"),
+                      title: Text(journals[index].title),
+                      subtitle: Text(journals[index].time),
                       trailing: Text(journals[index].mood,
-                          style:
-                              TextStyle(fontSize: 18, color: MyColours.black)),
+                          style:  TextStyle(fontSize: 18, color: MyColours.black)),
                       onTap: () {
                         Navigator.push(
                           context,

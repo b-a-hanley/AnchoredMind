@@ -8,6 +8,7 @@ import '../controllers/controller_manager.dart';
 import '../models/gratitude.dart';
 import '../pages/gratitude_list_page.dart';
 import '../controllers/gratitude_controller.dart';
+import '../services/auth_service.dart';
 import '../services/encrypt_service.dart';
 
 class GratitudeForm extends StatefulWidget {
@@ -96,6 +97,7 @@ class GratitudeFormState extends State<GratitudeForm> {
   List<String> dropdown1Values = [];
   List<String> dropdown2Values = [];
   List<String> dropdown3Values = [];
+  
 
   @override
   void initState() {
@@ -118,6 +120,7 @@ class GratitudeFormState extends State<GratitudeForm> {
   final TextEditingController gratitude2TEController = TextEditingController();
   final TextEditingController prompt3TEController = TextEditingController();
   final TextEditingController gratitude3TEController = TextEditingController();
+  final AuthService authService = AuthService();
 
   void submitForm() {
     if (formKey.currentState!.validate()) {
@@ -130,6 +133,7 @@ class GratitudeFormState extends State<GratitudeForm> {
       String time = DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
       gratitudeController.put(
         Gratitude(
+          loginId: authService.getLogin,
           prompt: prompt1,
           gratitude: encryptService.encrypt(gratitude1),
           time: time
@@ -137,6 +141,7 @@ class GratitudeFormState extends State<GratitudeForm> {
       );
       gratitudeController.put(
         Gratitude(
+          loginId: authService.getLogin,
           prompt: prompt2,
           gratitude: encryptService.encrypt(gratitude2),
           time: time
@@ -144,6 +149,7 @@ class GratitudeFormState extends State<GratitudeForm> {
       );
       gratitudeController.put(
         Gratitude(
+          loginId: authService.getLogin,
           prompt: prompt3,
           gratitude: encryptService.encrypt(gratitude3),
           time: time

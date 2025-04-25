@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/auth_service.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../components/my_app_bar.dart';
@@ -26,6 +27,7 @@ class JournalFormState extends State<JournalForm> {
   final TextEditingController moodTEController = TextEditingController();
   final TextEditingController journalTEController = TextEditingController();
   final EncryptService encryptService = EncryptService();
+  final AuthService authService = AuthService();
   String mood = "";
   int intensity = 0;
   String pageType = "add";
@@ -116,6 +118,7 @@ class JournalFormState extends State<JournalForm> {
       journalController.put(
         Journal(
           id: widget.index,
+          loginId: authService.getLogin,
           title: title,
           mood: mood,
           intensity: moodAdverb,
