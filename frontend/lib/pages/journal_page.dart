@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:frontend/services/encrypt_service.dart';
 import '../controllers/controller_manager.dart';
 import '../pages/journal_list_page.dart';
 import '../components/my_app_bar.dart';
@@ -19,6 +20,7 @@ class JournalPage extends StatefulWidget {
 
 class JournalPageState extends State<JournalPage> {
   final JournalController journalController = ControllerManager.instance.journalController;
+  final EncryptService encryptService = EncryptService();
   int index = 0;
   String title = "";
   String mood = "";
@@ -35,7 +37,7 @@ class JournalPageState extends State<JournalPage> {
     mood = journal.mood;
     intensity = journal.intensity;
     time = journal.time;
-    entry = journal.journal;
+    entry = encryptService.decrypt(journal.journal);
   }
 
   @override
