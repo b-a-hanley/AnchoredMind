@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:frontend/main.dart';
+import 'package:frontend/controllers/controller_manager.dart';
+import 'package:frontend/controllers/heartrate_controller.dart';
 // import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 class HeartrateService {
   final Guid heartrateServiceUUID = Guid("0000180D-0000-1000-8000-00805F9B34FB");
   final Guid heartrateCharacteristicUUID = Guid("00002A37-0000-1000-8000-00805F9B34FB");
-
+  final HeartrateController heartrateController = ControllerManager.instance.heartrateController;
   late BluetoothDevice heartrateDevice;
   final ValueNotifier<int> currentHeartrate = ValueNotifier<int>(0);
-
-
   
   Stream<List<String>> scan() {
     FlutterBluePlus.startScan(
@@ -56,7 +55,7 @@ class HeartrateService {
   void storeDevice() {
     List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
     DeviceIdentifier deviceId = connectedDevices.last.remoteId;
-    localDbService.putProfile(heartrateDevice: deviceId.str);
+    //heartrateController.putProfile(heartrateDevice: deviceId.str);
   }
 
   String getDeviceName() {
@@ -69,14 +68,14 @@ class HeartrateService {
     final services = await heartrateDevice.discoverServices();
     final hrService = services.firstWhere((s) => s.uuid == heartrateServiceUUID);
     final hrChar = hrService.characteristics.firstWhere((c) => c.uuid == heartrateCharacteristicUUID);
-    localDbService.putHeartrate(hrChar);
+    //heartrateController.putHeartrate(hrChar);
     await hrChar.setNotifyValue(true);
 
     hrChar.onValueReceived.listen((value) {
       final heartrate = parseHeartrate(value);
       currentHeartrate.value = heartrate;
       print(heartrate);
-      localDbService.putHeartrate(heartrate);
+      //heartrateController.putHeartrate(heartrate);
     });
   } 
 
@@ -88,23 +87,23 @@ class HeartrateService {
     return is16Bit ? (value[2] << 8) + value[1] : value[1];
   }
 
-  Future<String> reconnectToDevice() async {
-    final completer = Completer<String>();
-    String currentHeartrateDevice = localDbService.getProfileHeartrateDevice()!;
+  // Future<String> reconnectToDevice() async {
+  //   final completer = Completer<String>();
+  //   String currentHeartrateDevice = localDbService.getProfileHeartrateDevice()!;
 
-    StreamSubscription? subscription;
-    subscription = FlutterBluePlus.scanResults.listen((results) async {
-      for (ScanResult result in results) {
-        if (result.device.remoteId.str == currentHeartrateDevice) {
-          await FlutterBluePlus.stopScan();
-          await result.device.connect();
-          completer.complete("Connected to ${result.device.platformName}");
-          subscription?.cancel();
-          break;
-        }
-      }
-    });
+  //   StreamSubscription? subscription;
+  //   subscription = FlutterBluePlus.scanResults.listen((results) async {
+  //     for (ScanResult result in results) {
+  //       if (result.device.remoteId.str == currentHeartrateDevice) {
+  //         await FlutterBluePlus.stopScan();
+  //         await result.device.connect();
+  //         completer.complete("Connected to ${result.device.platformName}");
+  //         subscription?.cancel();
+  //         break;
+  //       }
+  //     }
+  //   });
 
-    return completer.future;
-  }
+  //   return completer.future;
+  // }
 }

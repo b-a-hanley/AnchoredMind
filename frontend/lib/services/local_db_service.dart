@@ -1,4 +1,5 @@
 import 'package:frontend/models/page_action.dart';
+import 'package:frontend/services/auth_service.dart';
 import 'package:intl/intl.dart';
 import '../models/journal.dart';
 import '../models/gratitude.dart';
@@ -55,6 +56,7 @@ class LocalDBService {
     Journal? journal = journalBox.get(id);
     if (journal == null) {
       return Journal(
+        loginId: AuthService().getLogin,
         title: "No title",
         mood: "No mood",
         intensity: "No intensity",
@@ -99,6 +101,7 @@ class LocalDBService {
     Gratitude? gratitude = gratitudeBox.get(id);
     if (gratitude == null) {
       return Gratitude(
+        loginId: AuthService().getLogin,
         prompt: "No prompt",
         gratitude: "No gratitude",
         time: "No time"
@@ -140,8 +143,9 @@ class LocalDBService {
     Heartrate? heartrate = heartrateBox.get(id);
     if (heartrate == null) {
       return Heartrate(
-          heartrate: "No heartrate",
-          time: "No time"
+        loginId: AuthService().getLogin,
+        heartrate: "No heartrate",
+        time: "No time"
       );
     }
     else {
@@ -156,6 +160,7 @@ class LocalDBService {
   int putHeartrate(heartrate) {
     return heartrateBox.put(
       Heartrate(
+        loginId: AuthService().getLogin,
         heartrate: heartrate,
         time: DateTime.now().toString()
       )
@@ -171,6 +176,7 @@ class LocalDBService {
         language: language ?? "en",
         heartrateDevice: heartrateDevice ?? "",
         login: "login",
+        loginHash: "login",
         password: "Password1",
       );
     }
@@ -179,6 +185,7 @@ class LocalDBService {
         language: language ?? currentProfile.language,
         heartrateDevice: heartrateDevice ?? currentProfile.heartrateDevice,
         login: "login",
+        loginHash: "login",
         password: "Password1",
       );
     }
@@ -207,6 +214,7 @@ class LocalDBService {
 
   void putAction(String action) {
     actionBox.put(PageAction(
+      loginId: AuthService().getLogin,
       action: action,
       time: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())
     ));

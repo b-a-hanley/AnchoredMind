@@ -2,13 +2,11 @@ import 'dart:async';
 import '../pages/action_list_page.dart';
 import '../pages/heart_rate_monitor.dart';
 import '../pages/heartrate_list_page.dart';
+import '../providers/locale_provider.dart';
 import '../services/heartrate_service.dart';
 import '../components/my_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/controller_manager.dart';
-import '../controllers/profile_controller.dart';
-import '../providers/localeprovider.dart';
 import '../components/my_colours.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -19,7 +17,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  final ProfileController profileController = ControllerManager.instance.profileController;
   final HeartrateService heartrateService = HeartrateService();
   String? selectedDevice;
   List<String> deviceNames = [];

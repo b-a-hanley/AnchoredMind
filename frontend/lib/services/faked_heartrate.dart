@@ -7,7 +7,7 @@
 //     return ["Faked heartrate1", "Faked heartrate 2", "Faked heartrate 3"];
 //   }
 
-//   // Stop scanningw
+//   // Stop scanning
 //   void stopScan() {
 //     _scanSubscription.cancel();
 //   }

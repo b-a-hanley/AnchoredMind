@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
-import '../main.dart';
-
 
 class HeartRateMonitor extends StatefulWidget {
   @override
@@ -55,7 +53,6 @@ class _HeartRateMonitorState extends State<HeartRateMonitor> {
     setState(() {
       _heartRate = heartRate;
     });
-    localDbService.putHeartrate(heartRate);
   }
 
   @override
