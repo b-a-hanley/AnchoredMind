@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/auth_service.dart';
 import 'package:frontend/services/encrypt_service.dart';
 import '../components/my_button.dart';
 import '../controllers/controller_manager.dart';
 import '../controllers/profile_controller.dart';
+import '../models/profile.dart';
 import '../pages/home_page.dart';
 import '../pages/register_form.dart';
 import '../components/my_colours.dart';
@@ -44,22 +46,28 @@ class LoginPageState extends State<LoginPage> {
     if (formKey.currentState!.validate()) {
       String login = loginTEController.text;
       String password = passwordTEController.text;
-      String correctLogin = encryptService.decrypt(profileController.getLogin());
-      String correctPassword = encryptService.decrypt(profileController.getPassword());
-
+      Profile? profile = profileController.searchLogin(login);
+      if (profile==null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Login or Password is incorrect")),
+        );
+        return;
+      }
+      String correctLogin = encryptService.decrypt(profile.login);
+      String correctPassword = encryptService.decrypt(profile.password);
       if (login == correctLogin && password == correctPassword) {
+        AuthService authService = AuthService();
+        authService.login(profile.id);
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Welcome back!')),
+          SnackBar(content: Text('Welcome back ${authService.getLogin}!')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  "Login or Password is incorrect")),
+          SnackBar(content: Text("Login or Password is incorrect")),
         );
       }
     }
@@ -107,7 +115,7 @@ class LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'Login',
                     border: OutlineInputBorder(),
-                    hintText: "use ${encryptService.decrypt(profileController.getLogin())}",
+                    hintText: "use Login",
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -124,7 +132,7 @@ class LoginPageState extends State<LoginPage> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
-                    hintText: "use ${encryptService.decrypt(profileController.getPassword())}",
+                    hintText: "use Password1",
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

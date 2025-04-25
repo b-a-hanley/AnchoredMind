@@ -42,27 +42,17 @@ class RegisterFormState extends State<RegisterForm> {
 
   void attemptLogin() {
     if (formKey.currentState!.validate()) {
-      String login = encryptService.encrypt(loginTEController.text);
-      String password = encryptService.encrypt(passwordTEController.text);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password == $password')),
-      );
+      String login = loginTEController.text;
+      String password = passwordTEController.text;
+      //no check
       profileController.putAttribute(login: login, password: password);
-      String correctLogin = profileController.getLogin();
-      String correctPassword = profileController.getPassword();
-      if (login == correctLogin && password == correctPassword) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Welcome back!')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login or Password is incorrect")),
-        );
-      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Welcome back!')),
+      );
     }
   }
 
