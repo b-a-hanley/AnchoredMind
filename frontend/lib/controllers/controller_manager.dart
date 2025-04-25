@@ -24,7 +24,6 @@ class ControllerManager {
     final dir = await getApplicationDocumentsDirectory();
     _store = await openStore(
       directory: path.join(dir.path, "objectbox"),
-      
     );
 
     journalController = JournalController(_store);

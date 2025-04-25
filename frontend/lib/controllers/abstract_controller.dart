@@ -1,17 +1,34 @@
+import 'package:frontend/services/auth_service.dart';
 import '../objectbox.g.dart';
 
 abstract class BaseController<T> {
-  
-  late final Box<T> box;  
-  
-  List<T> getAll() => box.getAll();
+  AuthService authService = AuthService();
+  late final Box<T> box;
 
-  T? get(int id) => box.get(id);
+  //these will be overriden
+  List<T> getAll();
+  List<T> search(String text);
+  int itemLoginId(T item);
 
-  int put(T item) => box.put(item);
+  T? get(int id) {
+    final item = box.get(id);
+    if (item != null && itemLoginId(item) == authService.getLogin) return item;
+    return null; // access denied
+  }
 
-  bool delete(int id) => box.remove(id);
+  int put(T item) {
+    if (itemLoginId(item) != authService.getLogin) {
+      throw Exception("Unauthorised");
+    }
+    return box.put(item);
+  }
 
-  int getCount() => box.count();
+  bool delete(int id) {
+    final item = box.get(id);
+    if (item != null && itemLoginId(item) == authService.getLogin) {
+      return box.remove(id);
+    }
+    return false;
+  }
 
 }
