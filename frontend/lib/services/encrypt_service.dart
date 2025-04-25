@@ -1,4 +1,6 @@
 import 'package:encrypt/encrypt.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EncryptService {
@@ -28,6 +30,17 @@ class EncryptService {
     final encrypted = Encrypted.fromBase64(parts[1]);
     //return decrypted text
     return encrypter.decrypt(encrypted, iv: iv);
+  }
+
+  String hashLogin(String login) {
+    //convert login to bytes
+    var bytes = utf8.encode(login);
+
+    //hash
+    var hash = sha256.convert(bytes);
+
+    //return as hexadecimal
+    return hash.toString();
   }
 
 }

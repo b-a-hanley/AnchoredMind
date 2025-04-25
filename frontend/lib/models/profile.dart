@@ -7,6 +7,7 @@ class Profile{
   String language;
   String heartrateDevice;
   String login;
+  String loginHash;
   String password;
 
   Profile({
@@ -14,6 +15,7 @@ class Profile{
     required this.language,
     required this.heartrateDevice,
     required this.login,
+    required this.loginHash,
     required this.password,
   });
 }

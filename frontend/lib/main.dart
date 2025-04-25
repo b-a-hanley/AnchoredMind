@@ -5,12 +5,10 @@ import 'languages/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'; 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'providers/localeprovider.dart';
+import 'providers/locale_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'services/local_db_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-late LocalDBService localDbService;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +18,6 @@ void main() async {
   await ControllerManager.instance.init();
   requestPermissions();
   runApp(
-    //allows for providers to be accessed anywhere
     ChangeNotifierProvider(
       create: (context) => LocaleProvider(),
       child: AnchoredMind(),
