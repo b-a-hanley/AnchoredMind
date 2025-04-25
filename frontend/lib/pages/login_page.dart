@@ -26,6 +26,7 @@ class LoginPageState extends State<LoginPage> {
   String mood = "";
   int intensity = 0;
   String selectedDate = "";
+  bool obscureText = true;
 
   @override
   void initState() {
@@ -106,10 +107,9 @@ class LoginPageState extends State<LoginPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                Center(child: Text("Sign-in")),
-
-                Text("Login"),
-                TextFormField(
+                  Center(child: Text("Sign-in", style: TextStyle(fontSize: 20),)),
+                    SizedBox(height: 20),
+                    TextFormField(
                   controller: loginTEController,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -124,15 +124,24 @@ class LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
-                Text("Password"),
+                SizedBox(height: 20),
                 TextFormField(
+                  obscureText: obscureText,
                   controller: passwordTEController,
-                  maxLines: null,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
                     hintText: "use Password1",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
