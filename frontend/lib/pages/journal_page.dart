@@ -53,8 +53,7 @@ class JournalPageState extends State<JournalPage> {
             color: MyColours.teal,
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Expanded(
-            child: Column(
+          child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
               //Text(index.toString()),
@@ -152,7 +151,6 @@ class JournalPageState extends State<JournalPage> {
                 ],
               ),
             ]),
-          ),
         ),
       ]),
     );
