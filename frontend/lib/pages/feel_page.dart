@@ -104,7 +104,7 @@ class FeelPageState extends State<FeelPage> {
             child: LineChart(
               LineChartData(
                 titlesData: FlTitlesData(
-                  bottomTitles: AxisTitles(//horiozntal seconds title 
+                  bottomTitles: AxisTitles( //horizontal seconds title
                     sideTitles: SideTitles(
                       showTitles: true,
                       interval: 500, //0.5 seconds
