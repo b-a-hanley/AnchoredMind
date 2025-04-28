@@ -8,6 +8,7 @@ import '../models/gratitude.dart';
 import '../pages/gratitude_list_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../services/encrypt_service.dart';
 
 class GratitudeEditForm extends StatefulWidget {
   final int index;
@@ -23,6 +24,7 @@ class GratitudeEditFormState extends State<GratitudeEditForm> {
   final formKey = GlobalKey<FormState>(); 
   final TextEditingController gratitudeTEController = TextEditingController();
   final AuthService authService = AuthService();
+  final EncryptService encryptService = EncryptService();
   String prompt = "";
   String time = "";
 
@@ -32,7 +34,7 @@ class GratitudeEditFormState extends State<GratitudeEditForm> {
     Gratitude gratitude = gratitudeController.get(widget.index)!;
     prompt = gratitude.prompt;
     time = gratitude.time;
-    gratitudeTEController.text = gratitude.gratitude;
+    gratitudeTEController.text = encryptService.decrypt(gratitude.gratitude);
   }
 
   @override
@@ -49,7 +51,7 @@ class GratitudeEditFormState extends State<GratitudeEditForm> {
           id: widget.index,
           loginId: authService.getLogin,
           prompt: prompt,
-          gratitude: gratitude,
+          gratitude: encryptService.encrypt(gratitude),
           time: time
         ) 
       );
