@@ -1,6 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:frontend/pages/agreement_page.dart';
 import './controllers/controller_manager.dart';
-import './pages/login_page.dart';
 import 'languages/l10n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'; 
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class AnchoredMind extends StatelessWidget {
         GlobalMaterialLocalizations.delegate, //control material localisations
         GlobalWidgetsLocalizations.delegate, //controls text direction
       ],
-      home: LoginPage(),
+      home: AgreementPage(),
     );
   }
 }
