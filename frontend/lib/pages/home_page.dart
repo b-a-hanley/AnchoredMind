@@ -37,24 +37,26 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => FeelListPage()),
                   );
                 },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 120, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: MyColours.lightTeal,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(children: [
-                    Text(
-                      AppLocalizations.of(context)!.feel,
-                      style: TextStyle(
-                        fontSize: 32.0, // Make the text larger
-                      ),
+                child: 
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 25),
+                    decoration: BoxDecoration(
+                      color: MyColours.lightTeal,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    Image.asset("assets/images/logo_clear.png",
-                        width: 150, height: 150),
-                  ]),
-                ),
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    child: Column(children: [
+                      Text(
+                        AppLocalizations.of(context)!.feel,
+                        style: TextStyle(
+                          fontSize: 32.0, 
+                        ),
+                      ),
+                      Icon(Icons.vibration, size: 100,)
+                    ]),
+                  ),
               ),
               GridView.count(
                   shrinkWrap: true,
