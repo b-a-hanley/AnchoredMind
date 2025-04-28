@@ -1,0 +1,219 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:2471396633917328088",
+      "lastPropertyId": "5:5512741927180359697",
+      "name": "Gratitude",
+      "properties": [
+        {
+          "id": "1:6768859771629705759",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3353597515299899053",
+          "name": "prompt",
+          "type": 9
+        },
+        {
+          "id": "3:7208261403333453917",
+          "name": "gratitude",
+          "type": 9
+        },
+        {
+          "id": "4:1552271777086520952",
+          "name": "time",
+          "type": 9
+        },
+        {
+          "id": "5:5512741927180359697",
+          "name": "loginId",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:4711068410205801635",
+      "lastPropertyId": "7:2442928959950027916",
+      "name": "Journal",
+      "properties": [
+        {
+          "id": "1:8911022526981100978",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7515719550566361150",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "3:7441421998771758238",
+          "name": "mood",
+          "type": 9
+        },
+        {
+          "id": "4:6741829604657874032",
+          "name": "intensity",
+          "type": 9
+        },
+        {
+          "id": "5:2440164674604385192",
+          "name": "time",
+          "type": 9
+        },
+        {
+          "id": "6:1338053904837870947",
+          "name": "journal",
+          "type": 9
+        },
+        {
+          "id": "7:2442928959950027916",
+          "name": "loginId",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:773750519946823759",
+      "lastPropertyId": "4:8339506104406457889",
+      "name": "Heartrate",
+      "properties": [
+        {
+          "id": "1:7919842977219812998",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2763772398942048125",
+          "name": "heartrate",
+          "type": 9
+        },
+        {
+          "id": "3:4410257775744340684",
+          "name": "time",
+          "type": 9
+        },
+        {
+          "id": "4:8339506104406457889",
+          "name": "loginId",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:5348299389296696978",
+      "lastPropertyId": "7:7032540988364145020",
+      "name": "Profile",
+      "properties": [
+        {
+          "id": "1:8893602705435457337",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4904773657105553469",
+          "name": "language",
+          "type": 9
+        },
+        {
+          "id": "4:6937893441676763795",
+          "name": "login",
+          "type": 9
+        },
+        {
+          "id": "5:9148562969846688580",
+          "name": "password",
+          "type": 9
+        },
+        {
+          "id": "6:505438787621063868",
+          "name": "heartrateDevice",
+          "type": 9
+        },
+        {
+          "id": "7:7032540988364145020",
+          "name": "loginHash",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "9:1618743968801676447",
+      "lastPropertyId": "4:5088622796797781290",
+      "name": "PageAction",
+      "properties": [
+        {
+          "id": "1:3825001616838500694",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7678288426908901506",
+          "name": "action",
+          "type": 9
+        },
+        {
+          "id": "3:5868028459231783539",
+          "name": "time",
+          "type": 9
+        },
+        {
+          "id": "4:5088622796797781290",
+          "name": "loginId",
+          "type": 6
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "9:1618743968801676447",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    554087009581390749,
+    1760634824961285982,
+    1345817825797861499,
+    1015374163973686694
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    7799292967835273230,
+    8846385385924385410,
+    4523205058209862644,
+    2846331201677363276,
+    9164771420800125964,
+    1211230433869606260,
+    3357199333426530394,
+    2380887895461005645,
+    2251074992104067846,
+    8757761062959724505,
+    5219210123510469387,
+    5185122666846809564,
+    2761014153577303738,
+    3393115230523397955,
+    7478721775908582385,
+    3786986123741102404,
+    65925834523909177,
+    229321463669362797,
+    336754630711547765,
+    5719932233073305838
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

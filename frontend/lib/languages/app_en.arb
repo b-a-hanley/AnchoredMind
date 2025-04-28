@@ -1,0 +1,30 @@
+{
+    "feel": "Feel",
+    "@feel":{
+        "description": "The Feel section title"
+    },
+    "journal": "Journal",
+    "@journal":{
+        "description": "The Journal section title"
+    },
+    "gratitude": "Gratitude",
+    "@gratitude":{
+        "description": "The Gratitude section title"
+    },
+    "mindful": "Mindful",
+    "@mindful":{
+        "description": "The Mindful section title"
+    },
+    "breath": "Breathe",
+    "@breath":{
+        "description": "The Breathe section title"
+    },
+    "add": "Add new",
+    "@add":{
+        "description": "The add new button text"
+    },
+    "edit": "Edit",
+    "@edit":{
+        "description": "The edit button text"
+    }
+}
