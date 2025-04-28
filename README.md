@@ -7,4 +7,4 @@ One of the app’s key features is its use of haptic feedback, a conceptual sens
 The app underwent rigorous user experience and beta testing ensuring it meets a healthcare standard. A psychological evaluation was conducted of the app assessing App users Generalised Anxiety Disorder-7 (GAD-7) scores over a two-week period. The results confirmed a measurable reduction in GAD-7, approaching a statistical significance, this suggests a positive effect on users’ wellbeing. 
 
 # Installation
-Go to apk folder and download the apk-release.apk file and install on android phone
+Go to apk folder and download the apk-release.apk file and download and install on android phone
