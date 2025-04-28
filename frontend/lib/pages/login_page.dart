@@ -64,7 +64,7 @@ class LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => HomePage()),
         );
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Welcome back ${authService.getLogin}!')),
+          SnackBar(content: Text('Welcome back $correctLogin!')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -81,13 +81,19 @@ class LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Center(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset("assets/images/logo_clear.png",
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/images/logo_clear.png",
                   width: 40, height: 40),
-              Text(
-                "AnchoredMind",
-                textAlign: TextAlign.center,
-              ),
+                  Text(
+                    "AnchoredMind",
+                    textAlign: TextAlign.center,
+                  ),
+              ],),
+              SizedBox(height: 40, width: 40)
             ],
           ),
         ),
