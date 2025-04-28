@@ -63,13 +63,19 @@ class RegisterFormState extends State<RegisterForm> {
       appBar: AppBar(
         title: Center(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset("assets/images/logo_clear.png",
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/images/logo_clear.png",
                   width: 40, height: 40),
-              Text(
-                "AnchoredMind",
-                textAlign: TextAlign.center,
-              ),
+                  Text(
+                    "AnchoredMind",
+                    textAlign: TextAlign.center,
+                  ),
+              ],),
+              SizedBox(height: 40, width: 40)
             ],
           ),
         ),
